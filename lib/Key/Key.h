@@ -58,6 +58,7 @@ public:
     Key(byte pin[]);
     ~Key();
 
+    void select();
     void keyCommands();
     void manualSwitcher();
 };

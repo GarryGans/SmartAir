@@ -47,7 +47,7 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
         }
     }
 
-    if (play >= finish && nowTime() < finish)
+    if (!onlyDay && play >= finish)
     {
         work = nightWork;
     }
@@ -59,16 +59,26 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
         stop -= 24 * 60;
     }
 
-    if (onlyDay && stop >= finish && nowTime() < finish)
+    if (play > stop)
     {
-        stop = finish;
+        if (onlyDay && stop < finish && nowTime() < midNightBefore) 
+        {
+            stop = finish;
+        }
+        else if (onlyDay && stop > finish)
+        {
+            stop = finish;
+        }
     }
-    else if (onlyDay && stop < play)
+    else
     {
-        stop = finish;
+        if (onlyDay && stop > finish)
+        {
+            stop = finish;
+        }
     }
 
-    Serial.print("play ");
+        Serial.print("play ");
     Serial.println(play);
     Serial.print("stop ");
     Serial.println(stop);
@@ -98,14 +108,11 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
     {
         if ((nowTime() >= play && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < stop))
         {
-            autoSwitch[0] = true;
+            autoSwitch[flowPin] = true;
         }
         else
         {
-            for (byte i = 0; i < speedPinsAmount; i++)
-            {
-                autoSwitch[i] = false;
-            }
+            autoSwitch[flowPin] = false;
         }
     }
 
@@ -113,14 +120,11 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
     {
         if (nowTime() >= play && nowTime() < stop)
         {
-            autoSwitch[0] = true;
+            autoSwitch[flowPin] = true;
         }
         else
         {
-            for (byte i = 0; i < speedPinsAmount; i++)
-            {
-                autoSwitch[i] = false;
-            }
+            autoSwitch[flowPin] = false;
         }
     }
     else
@@ -130,6 +134,15 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
             autoSwitch[i] = false;
         }
     }
+
+    // if (nowTime() >= stop && nowTime() < play)
+    // {
+    //     autoSwitch[flowPin] = false;
+    // }
+    // else
+    // {
+    //     autoSwitch[flowPin] = true;
+    // }
 }
 
 void Watch::autoFlow(Key &key)
@@ -185,9 +198,15 @@ void Watch::autoFlow(Key &key)
 
         switchFlow(play, stop, autoSwitch);
 
-        if (onlyDay && !autoSwitch[0] && stop == finish)
+        if (onlyDay && !autoSwitch[flowPin] && stop == finish)
         {
-            firstStart = false;
+            play = start;
+            stop = play + work;
+            Serial.println("firstStart");
+            Serial.print("play ");
+            Serial.println(play);
+            Serial.print("stop ");
+            Serial.println(stop);
         }
     }
 }

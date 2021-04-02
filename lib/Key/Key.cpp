@@ -8,12 +8,8 @@ Key::~Key()
 {
 }
 
-
-
-void Key::keyCommands()
+void Key::select()
 {
-    read();
-
     if (justPressed())
     {
         switch (getNum)
@@ -24,7 +20,6 @@ void Key::keyCommands()
 
         case MINUS:
 
-            
             break;
 
         case SELECT:
@@ -45,8 +40,6 @@ void Key::keyCommands()
                 default:
                     break;
                 }
-
-               
 
                 break;
 
@@ -95,7 +88,6 @@ void Key::keyCommands()
         switch (getNum)
         {
         case PLUS:
-            
 
             break;
 
@@ -132,84 +124,93 @@ void Key::keyCommands()
     }
 }
 
+
+
+void Key::keyCommands()
+{
+    read();
+
+    
+}
+
 void Key::manualSwitcher()
 {
-//     switch (mode)
-//     {
-//     case MANUAL:
+    switch (mode)
+    {
+    case MANUAL:
 
-//         switch (fanMode)
-//         {
-//         case HIGH_SPEED:
-//             fanMode = LOW_SPEED;
-//             break;
+        switch (fanMode)
+        {
+        case HIGH_SPEED:
+            fanMode = LOW_SPEED;
+            break;
 
-//         case LOW_SPEED:
-//             fanMode = HIGH_SPEED;
-//             break;
+        case LOW_SPEED:
+            fanMode = HIGH_SPEED;
+            break;
 
-//         default:
-//             break;
-//         }
+        default:
+            break;
+        }
 
-//         break;
+        break;
 
-//     default:
-//         break;
-//     }
+    default:
+        break;
+    }
 
-//     if (fanState == swON && !manualSwitch[0])
-//     {
-//         manualSwitch[0] = true;
-//         manualSwitch[1] = false;
-//         fanMode = LOW_SPEED;
-//     }
-//     else if (fanState == swON && manualSwitch[0])
-//     {
-//         manualSwitch[0] = false;
-//         manualSwitch[1] = true;
-//         fanMode = HIGH_SPEED;
-//     }
+    if (fanState == swON && !manualSwitch[0])
+    {
+        manualSwitch[0] = true;
+        manualSwitch[1] = false;
+        fanMode = LOW_SPEED;
+    }
+    else if (fanState == swON && manualSwitch[0])
+    {
+        manualSwitch[0] = false;
+        manualSwitch[1] = true;
+        fanMode = HIGH_SPEED;
+    }
     
-//     if (swON && !manualSwitch[0] && fanMode == LOW_SPEED)
-//     {
-//         manualSwitch[0] = true;
-//         manualSwitch[1] = false;
-//         fanMode = LOW_SPEED;
-//     }
-//     else if (swON && manualSwitch[0] && fanMode == LOW_SPEED)
-//     {
-//         manualSwitch[0] = false;
-//         manualSwitch[1] = false;
-//         fanMode = LOW_SPEED;
-//     }
-//     else if (swON && !manualSwitch[1] && fanMode == HIGH_SPEED)
-//     {
-//         manualSwitch[0] = false;
-//         manualSwitch[1] = true;
-//         fanMode = HIGH_SPEED;
-//     }
-//     else if (swON && manualSwitch[1] && fanMode == HIGH_SPEED)
-//     {
-//         manualSwitch[0] = false;
-//         manualSwitch[1] = false;
-//         fanMode = HIGH_SPEED;
-//     }
+    if (swON && !manualSwitch[0] && fanMode == LOW_SPEED)
+    {
+        manualSwitch[0] = true;
+        manualSwitch[1] = false;
+        fanMode = LOW_SPEED;
+    }
+    else if (swON && manualSwitch[0] && fanMode == LOW_SPEED)
+    {
+        manualSwitch[0] = false;
+        manualSwitch[1] = false;
+        fanMode = LOW_SPEED;
+    }
+    else if (swON && !manualSwitch[1] && fanMode == HIGH_SPEED)
+    {
+        manualSwitch[0] = false;
+        manualSwitch[1] = true;
+        fanMode = HIGH_SPEED;
+    }
+    else if (swON && manualSwitch[1] && fanMode == HIGH_SPEED)
+    {
+        manualSwitch[0] = false;
+        manualSwitch[1] = false;
+        fanMode = HIGH_SPEED;
+    }
 
-//     switch (mode)
-//     {
-//     case AUTO:
-//         mode = MANUAL;
-//         break;
+    switch (mode)
+    {
+    case AUTO:
+        mode = MANUAL;
+        break;
 
-//     case MANUAL:
-//         manualSwitch[0] = false;
-//         manualSwitch[1] = false;
-//         fanMode = LOW_SPEED;
-//         mode = AUTO;
+    case MANUAL:
+        manualSwitch[0] = false;
+        manualSwitch[1] = false;
+        fanMode = LOW_SPEED;
+        mode = AUTO;
 
-//     default:
+    default:
 
-//         break;
-//     }
+        break;
+    }
 }

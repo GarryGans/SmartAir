@@ -6,10 +6,10 @@
 #include <Key.h>
 
 #define speedPinsAmount 2
-#define dayWork 3
-#define nightWork 1
-#define dayPause 1
-#define nightPause 3
+#define dayWork 5
+#define nightWork 5
+#define dayPause 30
+#define nightPause 60
 
 class Watch : public RTC_extention
 {
@@ -17,6 +17,7 @@ class Watch : public RTC_extention
     friend class Screen;
 
 private:
+    boolean flowPin = 0;
     boolean onlyDay = 1;
     boolean firstStart;
 
@@ -33,8 +34,8 @@ private:
 
     boolean autoSwitch[speedPinsAmount];
 
-    int startHour = 23;
-    int startMin = 59;
+    int startHour = 5;
+    int startMin = 00;
     int finishHour = 23;
     int finishMin = 59;
 

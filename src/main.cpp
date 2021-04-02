@@ -28,8 +28,21 @@ void setup()
   screen.begin();
   delay(100);
 
+  // screen.clearDisplay();
+  // screen.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  // screen.display();
+  // delay(500);
+
+  // screen.clearDisplay();
+  // screen.iGorLogo();
+  // screen.display();
+  // delay(500);
+
+  // screen.clearDisplay();
+  // delay(500);
+
   watch.begin();
-  watch.adjustTime(Time(23,58,55));
+  watch.adjustTime(Time(23,57,55));
   // watch.adjustDate(Date(2018, 6, 8));
   // watch.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
@@ -44,7 +57,7 @@ void setup()
 
 void loop()
 {
-  key.keyCommands();
+  // key.keyCommands();
   watch.autoFlow(key);
   switchers.switcher(key, watch);
   screen.fanScreen(switchers, key, watch);

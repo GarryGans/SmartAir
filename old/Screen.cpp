@@ -1,11 +1,29 @@
 #include "Screen.h"
 
-Screen::Screen(/* args */) : U8G2_SH1106_128X64_NONAME_1_HW_I2C (U8G2_R0, /* reset=*/U8X8_PIN_NONE)
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+
+Screen::Screen(/* args */) : Adafruit_SSD1306(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET)
 {
 }
 
 Screen::~Screen()
 {
+}
+
+void Screen::iGorLogo()
+{
+    setTextColor(1);
+    setTextSize(1);
+
+    setCursor(65, 20);
+    print("Grow Light");
+    setCursor(70, 30);
+    print("Control");
+    setCursor(65, 40);
+    print("iGor_2019");
 }
 
 void Screen::showDigit(int value)
@@ -139,58 +157,54 @@ void Screen::showAlert()
 
 void Screen::bottomLine(Watch &watch, Key &key)
 {
-    
-    
-        
-    
+
     if (key.mode == key.MANUAL)
     {
-        setCursor(22, 59);
-        setFont(u8g2_font_pixelmordred_tf);
-
+        setCursor(0, 50);
+        // setFont(u8g2_font_pixelmordred_tf);
+        setTextSize(2);
         showAlert();
     }
     else
     {
-        setCursor(0, 57);
-        setFont(u8g2_font_pressstart2p_8f);
+        setCursor(5, 57);
+        // setFont(u8g2_font_pressstart2p_8f);
+        setTextSize(1);
         print(set[watch.onlyDay]);
         print(": ");
 
         // setCursor(30, 57);
-        setFont(u8g2_font_bitcasual_tn);
-
+        // setFont(u8g2_font_bitcasual_tn);
+        setTextSize(1);
         showFanTime(watch, key);
     }
-    
-    
 }
 
 void Screen::showFanState(Switchers &relayState, Key &key)
 {
 
-    setFont(u8g2_font_courB18_tr);
-    setCursor(5, 42);
-
+    // setFont(u8g2_font_courB18_tr);
+    setCursor(0, 24);
+    setTextSize(3);
     print("FAN");
 
-    setFont(u8g2_font_HelvetiPixelOutline_tr);
-    setCursor(60, 39);
+    // setFont(u8g2_font_HelvetiPixelOutline_tr);
+    setCursor(30, 24);
 
     if (relayState.relaySW[0] || relayState.relaySW[1])
     {
         print(fanState[1]);
-
-        setFont(u8g2_font_pressstart2p_8f);
+        setTextSize(1);
+        // setFont(u8g2_font_pressstart2p_8f);
 
         if (relayState.relaySW[0])
         {
-            setCursor(102, 35);
+            setCursor(74, 24);
             print(fanState[2]);
         }
         else if (relayState.relaySW[1])
         {
-            setCursor(97, 44);
+            setCursor(74, 24);
             print(fanState[3]);
         }
     }
@@ -219,31 +233,31 @@ void Screen::highLighter(Key &key)
     {
     case key.LIGHT:
 
-        setFontMode(1);  /* activate transparent font mode */
-        setDrawColor(1); /* color 1 for the box */
+        // setFontMode(1);  /* activate transparent font mode */
+        // setDrawColor(1); /* color 1 for the box */
         switch (key.highLight)
         {
         case key.DATE:
-            drawBox(0, 0, 70, 22);
+            // drawBox(0, 0, 70, 22);
             break;
 
         case key.TIME:
-            drawBox(70, 0, 58, 14);
+            // drawBox(70, 0, 58, 14);
             break;
 
         case key.START:
-            drawBox(5, 57, 30, 14);
+            // drawBox(5, 57, 30, 14);
             break;
 
         case key.STOP:
-            drawBox(30, 57, 30, 14);
+            // drawBox(30, 57, 30, 14);
             break;
 
         default:
             break;
         }
 
-        setDrawColor(2);
+        // setDrawColor(2);
         break;
 
     default:
@@ -255,24 +269,24 @@ void Screen::headerTime(Watch &watch)
 {
     Time now = watch.time();
 
-    setFont(u8g2_font_courB08_tn);
-
-    setCursor(74, 10);
+    // setFont(u8g2_font_courB08_tn);
+    setTextSize(1);
+    setCursor(80, 0);
     showStringNowTime(now.hour(), now.minute(), now.second());
 
-    setDrawColor(1);
+    // setDrawColor(1);
 }
 
 void Screen::headerDate(Watch &watch)
 {
     Date now = watch.date();
 
-    setFont(u8g2_font_courB08_tr);
-
-    setCursor(7, 8);
+    // setFont(u8g2_font_courB08_tr);
+    setTextSize(1);
+    setCursor(0, 0);
     print(daysOfTheWeek[now.dayOfTheWeek()]);
 
-    setCursor(5, 18);
+    setCursor(0, 9);
     showDigit(now.day());
     print('/');
     showDigit(now.month());
@@ -288,12 +302,15 @@ void Screen::showHeaderScreen(Watch &watch)
 
 void Screen::fanScreen(Switchers &relayState, Key &key, Watch &watch)
 {
-    firstPage();
-    do
-    {
-        highLighter(key);
-        showHeaderScreen(watch);
-        showFanState(relayState, key);
-        bottomLine(watch, key);
-    } while (nextPage());
+    // firstPage();
+    // do
+    // {
+    clearDisplay();
+    setTextColor(1);
+    // highLighter(key);
+    showHeaderScreen(watch);
+    showFanState(relayState, key);
+    bottomLine(watch, key);
+    display();
+    // } while (nextPage());
 }
