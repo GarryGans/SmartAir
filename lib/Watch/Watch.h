@@ -6,7 +6,7 @@
 #include <Key.h>
 
 #define speedPinsAmount 2
-#define dayWork 2
+#define dayWork 3
 #define nightWork 1
 #define dayPause 1
 #define nightPause 3
@@ -34,7 +34,7 @@ private:
     boolean autoSwitch[speedPinsAmount];
 
     int startHour = 23;
-    int startMin = 58;
+    int startMin = 59;
     int finishHour = 23;
     int finishMin = 59;
 
@@ -49,6 +49,7 @@ public:
     int calculateTimeToSecond(int hour, int min, int sec);
 
     int calculateTimeToMinute(int hour, int min);
+    void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
     void calculateAutoSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
 };
 

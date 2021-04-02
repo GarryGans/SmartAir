@@ -30,94 +30,66 @@ int Watch::nowTime()
     return (calculateTimeToMinute(now.hour(), now.minute()));
 }
 
+void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, int &pause)
+{
+    if (!firstStart)
+    {
+        play = nowTime();
+        firstStart = true;
+    }
+
+    else
+    {
+        play = stop + pause;
+        if (play > midNightBefore)
+        {
+            play -= 24 * 60;
+        }
+    }
+
+    if (play >= finish && nowTime() < finish)
+    {
+        work = nightWork;
+    }
+
+    stop = play + work;
+
+    if (stop > midNightBefore)
+    {
+        stop -= 24 * 60;
+    }
+
+    if (onlyDay && stop >= finish && nowTime() < finish)
+    {
+        stop = finish;
+    }
+    else if (onlyDay && stop < play)
+    {
+        stop = finish;
+    }
+
+    Serial.print("play ");
+    Serial.println(play);
+    Serial.print("stop ");
+    Serial.println(stop);
+}
+
 void Watch::calculateAutoSwitch(int start, int finish, int &play, int &stop, int &work, int &pause)
 {
     if (play > stop)
     {
         if (nowTime() >= stop && nowTime() < play - pause)
         {
-            if (!firstStart)
-            {
-                play = nowTime();
-                firstStart = true;
-            }
-
-            else
-            {
-                play = stop + pause;
-                if (play > midNightBefore)
-                {
-                    play -= 24 * 60;
-                }
-            }
-
-            if (play >= finish && nowTime() < finish)
-            {
-                work = nightWork;
-            }
-
-            stop = play + work;
-
-            if (stop > midNightBefore)
-            {
-                stop -= 24 * 60;
-            }
-
-            if (onlyDay && stop >= finish && nowTime() < finish)
-            {
-                stop = finish;
-            }
-
-            Serial.print("play ");
-            Serial.println(play);
-            Serial.print("stop ");
-            Serial.println(stop);
+            stopStart(start, finish, play, stop, work, pause);
         }
     }
     else
     {
         if (nowTime() >= stop)
         {
-            if (!firstStart)
-            {
-                play = nowTime();
-                firstStart = true;
-            }
-
-            else
-            {
-                play = stop + pause;
-                if (play > midNightBefore)
-                {
-                    play -= 24 * 60;
-                }
-            }
-
-            if (play >= finish && nowTime() < finish)
-            {
-                work = nightWork;
-            }
-
-            stop = play + work;
-
-            if (stop > midNightBefore)
-            {
-                stop -= 24 * 60;
-            }
-
-            if (onlyDay && stop >= finish && nowTime() < finish)
-            {
-                stop = finish;
-            }
-
-            Serial.print("play ");
-            Serial.println(play);
-            Serial.print("stop ");
-            Serial.println(stop);
+            stopStart(start, finish, play, stop, work, pause);
         }
     }
-    
-    
 }
 
 void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
@@ -167,7 +139,7 @@ void Watch::autoFlow(Key &key)
         start = calculateTimeToMinute(startHour, startMin);
         finish = calculateTimeToMinute(finishHour, finishMin);
 
-        if ((nowTime() >= start && nowTime() < finish) || onlyDay)
+        if ((nowTime() >= start && nowTime() < finish) || onlyDay || start == finish)
         {
             work = dayWork;
             pause = dayPause;
@@ -213,9 +185,9 @@ void Watch::autoFlow(Key &key)
 
         switchFlow(play, stop, autoSwitch);
 
-        // if (onlyDay && !autoSwitch[0] && stop == finish)
-        // {
-        //     firstStart = false;
-        // }
+        if (onlyDay && !autoSwitch[0] && stop == finish)
+        {
+            firstStart = false;
+        }
     }
 }
