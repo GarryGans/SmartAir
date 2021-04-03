@@ -42,7 +42,7 @@ void setup()
   // delay(500);
 
   watch.begin();
-  watch.adjustTime(Time(23,57,55));
+  // watch.adjustTime(Time(15,57,55));
   // watch.adjustDate(Date(2018, 6, 8));
   // watch.adjust(DateTime(F(__DATE__), F(__TIME__)));
 

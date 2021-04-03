@@ -8,6 +8,27 @@ Watch::~Watch()
 {
 }
 
+void Watch::calculateTimeFromMinute(int time, int &hour, int &minute)
+{
+    hour = 0;
+    minute = 0;
+
+    if (time < 60)
+    {
+        hour = 0;
+    }
+    else
+    {
+        while (time >= 60)
+        {
+            time -= 60;
+            hour++;
+        }
+    }
+
+    minute = time;
+}
+
 int Watch::calculateTimeToSecond(int hour, int min, int sec)
 {
     return ((hour * 60 + min) * 60 + sec);
@@ -61,7 +82,7 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
 
     if (play > stop)
     {
-        if (onlyDay && stop < finish && nowTime() < midNightBefore) 
+        if (onlyDay && stop < finish && finish <= midNightBefore)
         {
             stop = finish;
         }
@@ -78,7 +99,10 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
         }
     }
 
-        Serial.print("play ");
+    calculateTimeFromMinute(play, playHour, playMin);
+    calculateTimeFromMinute(stop, stopHour, stophMin);
+
+    Serial.print("play ");
     Serial.println(play);
     Serial.print("stop ");
     Serial.println(stop);
@@ -196,12 +220,17 @@ void Watch::autoFlow(Key &key)
             }
         }
 
+        
+
         switchFlow(play, stop, autoSwitch);
 
         if (onlyDay && !autoSwitch[flowPin] && stop == finish)
         {
             play = start;
             stop = play + work;
+            firstStart = false;
+            calculateTimeFromMinute(play, playHour, playMin);
+            calculateTimeFromMinute(stop, stopHour, stophMin);
             Serial.println("firstStart");
             Serial.print("play ");
             Serial.println(play);

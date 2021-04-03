@@ -8,7 +8,7 @@
 #define speedPinsAmount 2
 #define dayWork 5
 #define nightWork 5
-#define dayPause 30
+#define dayPause 20
 #define nightPause 60
 
 class Watch : public RTC_extention
@@ -37,7 +37,12 @@ private:
     int startHour = 5;
     int startMin = 00;
     int finishHour = 23;
-    int finishMin = 59;
+    int finishMin = 10;
+
+    int playHour;
+    int playMin;
+    int stopHour;
+    int stophMin;
 
 public:
     Watch(/* args */);
@@ -49,6 +54,7 @@ public:
     int nowSec();
     int calculateTimeToSecond(int hour, int min, int sec);
 
+    void calculateTimeFromMinute(int time, int &hour, int &minute);
     int calculateTimeToMinute(int hour, int min);
     void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
     void calculateAutoSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);

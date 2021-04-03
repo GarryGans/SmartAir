@@ -96,11 +96,11 @@ void Screen::showStringTime(int hh, int mm)
 
 void Screen::showStringFanTime(Watch &watch)
 {
-    showStringTime(watch.startHour, watch.startMin);
+    showStringTime(watch.playHour, watch.playMin);
 
     print("-");
 
-    showStringTime(watch.finishHour, watch.finishMin);
+    showStringTime(watch.stopHour, watch.stophMin);
 }
 
 void Screen::showFanTime(Watch &watch, Key &key)
@@ -291,7 +291,7 @@ void Screen::fanScreen(Switchers &relayState, Key &key, Watch &watch)
     firstPage();
     do
     {
-        highLighter(key);
+        // highLighter(key);
         showHeaderScreen(watch);
         showFanState(relayState, key);
         bottomLine(watch, key);
