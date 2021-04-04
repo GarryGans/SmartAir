@@ -6,7 +6,7 @@
 #include <Key.h>
 
 #define speedPinsAmount 2
-#define dayWork 5
+#define dayWork 10
 #define nightWork 5
 #define dayPause 20
 #define nightPause 60
@@ -17,6 +17,7 @@ class Watch : public RTC_extention
     friend class Screen;
 
 private:
+    boolean night;
     boolean flowPin = 0;
     boolean onlyDay = 1;
     boolean firstStart;
@@ -52,10 +53,12 @@ public:
     void autoFlow(Key &key);
     int nowTime();
     int nowSec();
-    int calculateTimeToSecond(int hour, int min, int sec);
+    int timeToSecond(int hour, int min, int sec);
 
-    void calculateTimeFromMinute(int time, int &hour, int &minute);
-    int calculateTimeToMinute(int hour, int min);
+    void timeFromMinute(int time, int &hour, int &minute);
+    int timeToMinute(int hour, int min);
+    void correctStop(int finish, int &play, int &stop);
+    void midNigth(int &value);
     void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
     void calculateAutoSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
 };
