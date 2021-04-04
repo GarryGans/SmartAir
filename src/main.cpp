@@ -14,8 +14,6 @@
 byte speedPins[] = {FAN_L1, FAN_L2};
 byte keyPin[] = {2, 3, 4, 5, 6};
 
-
-
 Key key(keyPin);
 Switchers switchers;
 Watch watch;
@@ -27,19 +25,6 @@ void setup()
 
   screen.begin();
   delay(100);
-
-  // screen.clearDisplay();
-  // screen.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  // screen.display();
-  // delay(500);
-
-  // screen.clearDisplay();
-  // screen.iGorLogo();
-  // screen.display();
-  // delay(500);
-
-  // screen.clearDisplay();
-  // delay(500);
 
   watch.begin();
   // watch.adjustTime(Time(15,57,55));
