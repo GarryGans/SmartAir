@@ -6,12 +6,16 @@
 
 #define FAN_L1 7
 #define FAN_L2 8
+#define FOG_L 9
+#define FOG_But 10
 
 #define KB1x4 0
 
 #define timeHoldKey 1000
 
 byte speedPins[] = {FAN_L1, FAN_L2};
+byte fogPin = FOG_L;
+byte fogBut = FOG_But;
 byte keyPin[] = {2, 3, 4, 5, 6};
 
 Key key(keyPin);
@@ -36,7 +40,7 @@ void setup()
   key.begin(KB1x4, timeHoldKey);
   delay(100);
 
-  switchers.begin(speedPins);
+  switchers.begin(speedPins, fogPin, fogBut);
   delay(100);
 }
 
@@ -44,6 +48,10 @@ void loop()
 {
   // key.keyCommands();
   watch.autoFlow(key);
-  switchers.switcher(key, watch);
+  switchers.flowSwitcher(key, watch);
+
+  watch.autoFog(key);
+  switchers.fogSwitcher(key, watch);
+
   screen.fanScreen(switchers, key, watch);
 }

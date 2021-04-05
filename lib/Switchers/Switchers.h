@@ -14,16 +14,20 @@
 class Switchers
 {
     friend class Screen;
+
 private:
     byte speedPins[speedPinsAmount];
     boolean relaySW[speedPinsAmount];
+    boolean fogPin;
+    boolean fogBut;
 
 public:
     Switchers(/* args */);
     ~Switchers();
 
-    void begin(byte speedPins[]);
-    void switcher(Key &key, Watch &watch);
+    void begin(byte speedPins[], byte fogPin, byte fogBut);
+    void flowSwitcher(Key &key, Watch &watch);
+    void fogSwitcher(Key &key, Watch &watch);
 };
 
 #endif

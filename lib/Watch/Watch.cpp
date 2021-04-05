@@ -62,6 +62,7 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
         else
         {
             autoSwitch[flowPin] = false;
+            fog = true;
         }
     }
 
@@ -74,6 +75,7 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
         else
         {
             autoSwitch[flowPin] = false;
+            fog = true;
         }
     }
 
@@ -82,6 +84,7 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
         for (byte i = 0; i < speedPinsAmount; i++)
         {
             autoSwitch[i] = false;
+            fog = false;
         }
     }
 }
@@ -172,6 +175,7 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
 
 void Watch::calculateAutoSwitch(int start, int finish, int &play, int &stop, int &work, int &pause)
 {
+    // NEED to EDIT
     if ((nowTime() >= start && nowTime() < finish) || onlyDay || start == finish)
     {
         work = dayWork;
@@ -185,6 +189,7 @@ void Watch::calculateAutoSwitch(int start, int finish, int &play, int &stop, int
         pause = nightPause;
         night = true;
     }
+    // End
 
     if (play > stop)
     {
@@ -240,9 +245,10 @@ void Watch::autoFlow(Key &key)
 
         switchFlow(play, stop, autoSwitch);
 
+        // need to EDIT
         if (!(start == finish))
         {
-            if (onlyDay && !autoSwitch[flowPin] && stop == finish)
+            if (onlyDay && !autoSwitch[flowPin] && stop >= finish)
             {
                 night = true;
 
@@ -260,6 +266,18 @@ void Watch::autoFlow(Key &key)
                 // Serial.print("stop ");
                 // Serial.println(stop);
             }
+        }
+        //end
+    }
+}
+
+void Watch::autoFog(Key &key)
+{
+    if (key.mode != key.MANUAL)
+    {
+        if (fog)
+        {
+            fogSwitch = true;
         }
     }
 }

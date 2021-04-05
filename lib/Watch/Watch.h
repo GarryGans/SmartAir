@@ -17,6 +17,8 @@ class Watch : public RTC_extention
     friend class Screen;
 
 private:
+    boolean fog;
+
     boolean night;
     boolean flowPin = 0;
     boolean onlyDay = 1;
@@ -34,6 +36,8 @@ private:
     const int midNightAfter = 0;
 
     boolean autoSwitch[speedPinsAmount];
+    boolean fogSwitch;
+    boolean fogBut;
 
     int startHour = 5;
     int startMin = 00;
@@ -49,18 +53,22 @@ public:
     Watch(/* args */);
     ~Watch();
 
-    void switchFlow(int play, int stop, boolean autoSwitch[]);
-    void autoFlow(Key &key);
-    int nowTime();
-    int nowSec();
-    int timeToSecond(int hour, int min, int sec);
-
     void timeFromMinute(int time, int &hour, int &minute);
+
+    int timeToSecond(int hour, int min, int sec);
     int timeToMinute(int hour, int min);
+
+    int nowSec();
+    int nowTime();
+
+    void switchFlow(int play, int stop, boolean autoSwitch[]);
     void correctStop(int finish, int &play, int &stop);
     void midNigth(int &value);
     void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
     void calculateAutoSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
+    void autoFlow(Key &key);
+
+    void autoFog(Key &key);
 };
 
 #endif

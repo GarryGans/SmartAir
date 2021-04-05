@@ -53,6 +53,7 @@ private:
 
     boolean dayReduration;
     boolean manualSwitch[speedPinsAmount];
+    boolean manualFog;
 
 public:
     Key(byte pin[]);

@@ -8,7 +8,7 @@ Switchers::~Switchers()
 {
 }
 
-void Switchers::begin(byte speedPins[])
+void Switchers::begin(byte speedPins[], byte fogPin, byte fogBut)
 {
     for (byte i = 0; i < speedPinsAmount; i++)
     {
@@ -16,9 +16,17 @@ void Switchers::begin(byte speedPins[])
         pinMode(speedPins[i], OUTPUT);
         digitalWrite(speedPins[i], OFF);
     }
+
+    this->fogPin = fogPin;
+    pinMode(fogPin, OUTPUT);
+    digitalWrite(fogPin, OFF);
+
+    this->fogBut = fogBut;
+    pinMode(fogBut, OUTPUT);
+    digitalWrite(fogBut, OFF);
 }
 
-void Switchers::switcher(Key &key, Watch &watch)
+void Switchers::flowSwitcher(Key &key, Watch &watch)
 {
     for (byte i = 0; i < speedPinsAmount; i++)
     {
@@ -32,6 +40,28 @@ void Switchers::switcher(Key &key, Watch &watch)
             digitalWrite(speedPins[i], OFF);
             relaySW[i] = false;
         }
-        
+    }
+}
+
+void Switchers::fogSwitcher(Key &key, Watch &watch)
+{
+    if (watch.fogSwitch || key.manualFog)
+    {
+        digitalWrite(fogPin, ON);
+        // relaySW[2] = true;
+    }
+    else
+    {
+        digitalWrite(fogPin, OFF);
+        // relaySW[2] = false;
+    }
+
+    if (watch.fogBut)
+    {
+        digitalWrite(fogBut, ON);
+    }
+    else
+    {
+        digitalWrite(fogBut, OFF);
     }
 }
