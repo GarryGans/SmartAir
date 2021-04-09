@@ -122,7 +122,7 @@ void Watch::midNigth(int &value)
 
 void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, int &pause)
 {
-    if (nowTime() >= stop)
+    if (nowTime() >= stop && !newDay)
     {
         if (!firstStart)
         {
@@ -176,11 +176,21 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
         timeFromMinute(play, playHour, playMin);
         timeFromMinute(stop, stopHour, stophMin);
     }
+
+    if (onlyDay && night)
+    {
+        newDay = true;
+        play = start;
+        stop = play + work;
+
+        timeFromMinute(play, playHour, playMin);
+        timeFromMinute(stop, stopHour, stophMin);
+    }
 }
 
 void Watch::setDuration(int start, int finish, int &work, int &pause)
 {
-    if (onlyDay || start == finish)
+    if (start == finish)
     {
         night = false;
     }
@@ -238,63 +248,9 @@ void Watch::autoFlow(Key &key)
         start = timeToMinute(startHour, startMin);
         finish = timeToMinute(finishHour, finishMin);
 
-        if (start == finish)
-        {
-            calculateAutoSwitch(start, finish, play, stop, work, pause);
-        }
-
-        else if (start < finish)
-        {
-            if (onlyDay && nowTime() >= start && nowTime() < finish)
-            {
-                calculateAutoSwitch(start, finish, play, stop, work, pause);
-            }
-            else if (!onlyDay)
-            {
-                calculateAutoSwitch(start, finish, play, stop, work, pause);
-            }
-        }
-
-        else if (start > finish)
-        {
-            if (onlyDay)
-            {
-                if ((nowTime() >= start && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < finish))
-                {
-                    calculateAutoSwitch(start, finish, play, stop, work, pause);
-                }
-            }
-            else if (!onlyDay)
-            {
-                calculateAutoSwitch(start, finish, play, stop, work, pause);
-            }
-        }
+        calculateAutoSwitch(start, finish, play, stop, work, pause);
 
         switchFlow(play, stop, autoSwitch);
-
-        // need to EDIT
-        if (!(start == finish))
-        {
-            if (onlyDay && !autoSwitch[flowPin] && stop >= finish)
-            {
-                night = true;
-
-                play = start;
-                stop = play + work;
-
-                firstStart = false;
-
-                timeFromMinute(play, playHour, playMin);
-                timeFromMinute(stop, stopHour, stophMin);
-
-                // Serial.println("firstStart");
-                // Serial.print("play ");
-                // Serial.println(play);
-                // Serial.print("stop ");
-                // Serial.println(stop);
-            }
-        }
-        //end
     }
 }
 
