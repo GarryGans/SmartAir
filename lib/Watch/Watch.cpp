@@ -53,11 +53,12 @@ int Watch::nowTime()
 
 void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
 {
-    if (play > stop)
+    if (play < stop)
     {
-        if ((nowTime() >= play && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < stop))
+        if (nowTime() >= play && nowTime() < stop)
         {
             autoSwitch[flowPin] = true;
+            fog = false;
         }
         else
         {
@@ -66,11 +67,12 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
         }
     }
 
-    else if (play < stop)
+    else if (play > stop)
     {
-        if (nowTime() >= play && nowTime() < stop)
+        if ((nowTime() >= play && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < stop))
         {
             autoSwitch[flowPin] = true;
+            fog = false;
         }
         else
         {
@@ -168,40 +170,65 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
             }
         }
 
+        stopFog = stop + fogTime;
+        midNigth(stopFog);
+
         timeFromMinute(play, playHour, playMin);
         timeFromMinute(stop, stopHour, stophMin);
     }
 }
 
-void Watch::calculateAutoSwitch(int start, int finish, int &play, int &stop, int &work, int &pause)
+void Watch::setDuration(int start, int finish, int &work, int &pause)
 {
-    // NEED to EDIT
-    if ((nowTime() >= start && nowTime() < finish) || onlyDay || start == finish)
+    if (onlyDay || start == finish)
+    {
+        night = false;
+    }
+
+    else if (start < finish)
+    {
+        if ((nowTime() >= start && nowTime() < finish))
+        {
+            night = false;
+        }
+
+        else
+        {
+            night = true;
+        }
+    }
+
+    else if (start > finish)
+    {
+        if ((nowTime() >= start && nowTime() < midNightBefore) || (nowTime() >= midNightAfter && nowTime() < finish))
+        {
+            night = false;
+        }
+
+        else
+        {
+            night = true;
+        }
+    }
+
+    if (!night)
     {
         work = dayWork;
         pause = dayPause;
-        night = false;
     }
 
     else
     {
         work = nightWork;
         pause = nightPause;
-        night = true;
     }
-    // End
+}
 
-    if (play > stop)
-    {
-        if (nowTime() >= midNightBefore)
-        {
-            stopStart(start, finish, play, stop, work, pause);
-        }
-    }
-    else
-    {
-        stopStart(start, finish, play, stop, work, pause);
-    }
+void Watch::calculateAutoSwitch(int start, int finish, int &play, int &stop, int &work, int &pause)
+{
+    setDuration(start, finish, work, pause);
+
+    stopStart(start, finish, play, stop, work, pause);
 }
 
 void Watch::autoFlow(Key &key)
@@ -277,7 +304,25 @@ void Watch::autoFog(Key &key)
     {
         if (fog)
         {
-            fogSwitch = true;
+            if (nowTime() > stop && nowTime() < stopFog)
+            {
+                fogSwitch = true;
+            }
+            else
+            {
+                fogSwitch = false;
+            }
+
+            if (fogSwitch)
+            {
+                fogBut = true;
+            }
+            else
+            {
+                fogBut = false;
+            }
+
+            fogBut = true;
         }
     }
 }

@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <RTC_extention.h>
 #include <Key.h>
+#include <Timer.h>
 
 #define speedPinsAmount 2
 #define dayWork 10
@@ -31,6 +32,9 @@ private:
 
     int play;
     int stop;
+
+    int stopFog;
+    int fogTime = 300;
 
     const int midNightBefore = 23 * 60 + 59;
     const int midNightAfter = 0;
@@ -65,6 +69,7 @@ public:
     void correctStop(int finish, int &play, int &stop);
     void midNigth(int &value);
     void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
+    void setDuration(int start, int finish, int &work, int &pause);
     void calculateAutoSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
     void autoFlow(Key &key);
 
