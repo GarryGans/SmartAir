@@ -21,12 +21,15 @@ private:
     boolean fog;
 
     boolean night;
+    boolean newDay;
+
     boolean flowPin = 0;
     boolean onlyDay = 1;
     boolean firstStart;
 
-    int start;
-    int finish;
+    int startDay;
+    int finishDay;
+
     int work;
     int pause;
 

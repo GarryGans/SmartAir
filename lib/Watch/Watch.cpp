@@ -91,23 +91,18 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
     }
 }
 
-void Watch::correctStop(int finish, int &play, int &stop)
+void Watch::correctStop(int finishDay, int &play, int &stop)
 {
-    if (play < finish)
+    if (play < finishDay)
     {
-        if (play < stop)
+        if (stop > finishDay && play < stop)
         {
-            if (stop > finish)
-            {
-                stop = finish;
-            }
+            stop = finishDay;
         }
-        else if (play > stop)
+
+        else if (play > stop && stop < finishDay)
         {
-            if (stop < finish)
-            {
-                stop = finish;
-            }
+            stop = finishDay;
         }
     }
 }
@@ -120,8 +115,13 @@ void Watch::midNigth(int &value)
     }
 }
 
-void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, int &pause)
+void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
 {
+    if (newDay && !night)
+    {
+        newDay = false;
+    }
+
     if (nowTime() >= stop && !newDay)
     {
         if (!firstStart)
@@ -138,16 +138,16 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
 
         if (!onlyDay)
         {
-            if (start < finish)
+            if (startDay < finishDay)
             {
-                if (play >= finish)
+                if (play >= finishDay)
                 {
                     work = nightWork;
                 }
             }
-            else if (start > finish && play >= midNightAfter)
+            else if (startDay > finishDay && play >= midNightAfter)
             {
-                if (play >= finish)
+                if (play >= finishDay)
                 {
                     work = nightWork;
                 }
@@ -159,14 +159,14 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
 
         if (!night)
         {
-            if (start < finish)
+            if (startDay < finishDay)
             {
-                correctStop(finish, play, stop);
+                correctStop(finishDay, play, stop);
             }
 
-            else if (start > finish && play >= midNightAfter)
+            else if (startDay > finishDay && play >= midNightAfter)
             {
-                correctStop(finish, play, stop);
+                correctStop(finishDay, play, stop);
             }
         }
 
@@ -180,7 +180,8 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
     if (onlyDay && night)
     {
         newDay = true;
-        play = start;
+
+        play = startDay;
         stop = play + work;
 
         timeFromMinute(play, playHour, playMin);
@@ -188,17 +189,18 @@ void Watch::stopStart(int start, int finish, int &play, int &stop, int &work, in
     }
 }
 
-void Watch::setDuration(int start, int finish, int &work, int &pause)
+void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
 {
-    if (start == finish)
+    if (startDay == finishDay)
     {
         night = false;
     }
 
-    else if (start < finish)
+    else if (startDay < finishDay)
     {
-        if ((nowTime() >= start && nowTime() < finish))
+        if ((nowTime() >= startDay && nowTime() < finishDay))
         {
+            newDay = false;
             night = false;
         }
 
@@ -208,10 +210,11 @@ void Watch::setDuration(int start, int finish, int &work, int &pause)
         }
     }
 
-    else if (start > finish)
+    else if (startDay > finishDay)
     {
-        if ((nowTime() >= start && nowTime() < midNightBefore) || (nowTime() >= midNightAfter && nowTime() < finish))
+        if ((nowTime() >= startDay && nowTime() < midNightBefore) || (nowTime() >= midNightAfter && nowTime() < finishDay))
         {
+            newDay = false;
             night = false;
         }
 
@@ -234,21 +237,21 @@ void Watch::setDuration(int start, int finish, int &work, int &pause)
     }
 }
 
-void Watch::calculateAutoSwitch(int start, int finish, int &play, int &stop, int &work, int &pause)
+void Watch::calculateAutoSwitch(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
 {
-    setDuration(start, finish, work, pause);
+    setDuration(startDay, finishDay, work, pause);
 
-    stopStart(start, finish, play, stop, work, pause);
+    stopStart(startDay, finishDay, play, stop, work, pause);
 }
 
 void Watch::autoFlow(Key &key)
 {
     if (key.mode != key.MANUAL)
     {
-        start = timeToMinute(startHour, startMin);
-        finish = timeToMinute(finishHour, finishMin);
+        startDay = timeToMinute(startHour, startMin);
+        finishDay = timeToMinute(finishHour, finishMin);
 
-        calculateAutoSwitch(start, finish, play, stop, work, pause);
+        calculateAutoSwitch(startDay, finishDay, play, stop, work, pause);
 
         switchFlow(play, stop, autoSwitch);
     }
