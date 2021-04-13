@@ -48,12 +48,12 @@ void Switchers::fogSwitcher(Key &key, Watch &watch)
     if (watch.fogSwitch || key.manualFog)
     {
         digitalWrite(fogPin, ON);
-        // relaySW[2] = true;
+        relayFog = true;
     }
     else
     {
         digitalWrite(fogPin, OFF);
-        // relaySW[2] = false;
+        relayFog = false;
     }
 
     if (watch.fogBut)

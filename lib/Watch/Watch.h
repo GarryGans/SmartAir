@@ -7,9 +7,9 @@
 #include <Timer.h>
 
 #define speedPinsAmount 2
-#define dayWork 10
+#define dayWork 5
 #define nightWork 5
-#define dayPause 20
+#define dayPause 10
 #define nightPause 60
 
 class Watch : public RTC_extention

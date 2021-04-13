@@ -16,6 +16,7 @@ class Switchers
     friend class Screen;
 
 private:
+    boolean relayFog;
     byte speedPins[speedPinsAmount];
     boolean relaySW[speedPinsAmount];
     boolean fogPin;

@@ -200,7 +200,6 @@ void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
     {
         if ((nowTime() >= startDay && nowTime() < finishDay))
         {
-            newDay = false;
             night = false;
         }
 
@@ -214,7 +213,6 @@ void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
     {
         if ((nowTime() >= startDay && nowTime() < midNightBefore) || (nowTime() >= midNightAfter && nowTime() < finishDay))
         {
-            newDay = false;
             night = false;
         }
 
@@ -263,7 +261,7 @@ void Watch::autoFog(Key &key)
     {
         if (fog)
         {
-            if (nowTime() > stop && nowTime() < stopFog)
+            if (nowTime() < stopFog)
             {
                 fogSwitch = true;
             }
@@ -280,8 +278,6 @@ void Watch::autoFog(Key &key)
             {
                 fogBut = false;
             }
-
-            fogBut = true;
         }
     }
 }
