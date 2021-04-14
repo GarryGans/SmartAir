@@ -23,7 +23,7 @@ private:
 
     byte fogPin;
     byte fogBut;
-    boolean relayFog;
+    boolean fogRelay;
 
 public:
     Switchers(/* args */);
