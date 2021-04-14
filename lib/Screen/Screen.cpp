@@ -1,6 +1,6 @@
 #include "Screen.h"
 
-Screen::Screen(/* args */) : U8G2_SH1106_128X64_NONAME_1_HW_I2C (U8G2_R0, /* reset=*/U8X8_PIN_NONE)
+Screen::Screen(/* args */) : U8G2_SH1106_128X64_NONAME_1_HW_I2C(U8G2_R0, /* reset=*/U8X8_PIN_NONE)
 {
 }
 
@@ -15,7 +15,6 @@ void Screen::showDigit(int value)
         print("0");
     }
     print(value);
-    // value < 10 ? print("0") : print(value);
 }
 
 boolean Screen::blinkReady()
@@ -139,10 +138,6 @@ void Screen::showAlert()
 
 void Screen::bottomLine(Watch &watch, Key &key)
 {
-    
-    
-        
-    
     if (key.mode == key.MANUAL)
     {
         setCursor(22, 59);
@@ -162,13 +157,10 @@ void Screen::bottomLine(Watch &watch, Key &key)
 
         showFanTime(watch, key);
     }
-    
-    
 }
 
 void Screen::showFanState(Switchers &relayState, Key &key)
 {
-
     setFont(u8g2_font_courB18_tr);
     setCursor(5, 42);
 
@@ -177,18 +169,18 @@ void Screen::showFanState(Switchers &relayState, Key &key)
     setFont(u8g2_font_HelvetiPixelOutline_tr);
     setCursor(60, 39);
 
-    if (relayState.relaySW[0] || relayState.relaySW[1])
+    if (relayState.flowRelay[0] || relayState.flowRelay[1])
     {
         print(fanState[1]);
 
         setFont(u8g2_font_pressstart2p_8f);
 
-        if (relayState.relaySW[0])
+        if (relayState.flowRelay[0])
         {
             setCursor(102, 35);
             print(fanState[2]);
         }
-        else if (relayState.relaySW[1])
+        else if (relayState.flowRelay[1])
         {
             setCursor(97, 44);
             print(fanState[3]);

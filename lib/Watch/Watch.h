@@ -10,7 +10,7 @@
 #define dayWork 5
 #define nightWork 5
 #define dayPause 10
-#define nightPause 60
+#define nightPause 30
 
 class Watch : public RTC_extention
 {
@@ -19,13 +19,12 @@ class Watch : public RTC_extention
 
 private:
     boolean fog;
-
+    boolean onlyDay = 1;
+    boolean firstStart;
     boolean night;
     boolean newDay;
 
-    boolean flowPin = 0;
-    boolean onlyDay = 1;
-    boolean firstStart;
+    byte flowPin = 0;
 
     int startDay;
     int finishDay;
@@ -42,7 +41,8 @@ private:
     const int midNightBefore = 23 * 60 + 59;
     const int midNightAfter = 0;
 
-    boolean autoSwitch[speedPinsAmount];
+    boolean flowSwitch[speedPinsAmount];
+    boolean fanSwitch;
     boolean fogSwitch;
     boolean fogBut;
 
@@ -68,15 +68,15 @@ public:
     int nowSec();
     int nowTime();
 
-    void switchFlow(int play, int stop, boolean autoSwitch[]);
+    void switchFlow(int play, int stop, boolean flowSwitch[]);
     void correctStop(int finish, int &play, int &stop);
     void midNigth(int &value);
     void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
     void setDuration(int start, int finish, int &work, int &pause);
-    void calculateAutoSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
+    void calculateFlowSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
     void autoFlow(Key &key);
-
     void autoFog(Key &key);
+    void autoFan(Key &key);
 };
 
 #endif

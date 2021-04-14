@@ -52,7 +52,8 @@ private:
     } fanState;
 
     boolean dayReduration;
-    boolean manualSwitch[speedPinsAmount];
+    boolean manualFlow[speedPinsAmount];
+    boolean manualFan;
     boolean manualFog;
 
 public:

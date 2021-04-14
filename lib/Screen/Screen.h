@@ -16,7 +16,7 @@ private:
     byte cursorPosition;
     byte choise;
 
-    const String set[2] = {"around", "day"};
+    const String set[2] = {"d&n", "day"};
 
     const String fanState[4] = {"OFF", "ON", "LOW", "HIGH"};
     const char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};

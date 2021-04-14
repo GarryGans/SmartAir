@@ -51,18 +51,18 @@ int Watch::nowTime()
     return (timeToMinute(now.hour(), now.minute()));
 }
 
-void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
+void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
 {
     if (play < stop)
     {
         if (nowTime() >= play && nowTime() < stop)
         {
-            autoSwitch[flowPin] = true;
+            flowSwitch[flowPin] = true;
             fog = false;
         }
         else
         {
-            autoSwitch[flowPin] = false;
+            flowSwitch[flowPin] = false;
             fog = true;
         }
     }
@@ -71,12 +71,12 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
     {
         if ((nowTime() >= play && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < stop))
         {
-            autoSwitch[flowPin] = true;
+            flowSwitch[flowPin] = true;
             fog = false;
         }
         else
         {
-            autoSwitch[flowPin] = false;
+            flowSwitch[flowPin] = false;
             fog = true;
         }
     }
@@ -85,7 +85,7 @@ void Watch::switchFlow(int play, int stop, boolean autoSwitch[])
     {
         for (byte i = 0; i < speedPinsAmount; i++)
         {
-            autoSwitch[i] = false;
+            flowSwitch[i] = false;
             fog = false;
         }
     }
@@ -235,7 +235,7 @@ void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
     }
 }
 
-void Watch::calculateAutoSwitch(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
+void Watch::calculateFlowSwitch(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
 {
     setDuration(startDay, finishDay, work, pause);
 
@@ -249,9 +249,24 @@ void Watch::autoFlow(Key &key)
         startDay = timeToMinute(startHour, startMin);
         finishDay = timeToMinute(finishHour, finishMin);
 
-        calculateAutoSwitch(startDay, finishDay, play, stop, work, pause);
+        calculateFlowSwitch(startDay, finishDay, play, stop, work, pause);
 
-        switchFlow(play, stop, autoSwitch);
+        switchFlow(play, stop, flowSwitch);
+    }
+}
+
+void Watch::autoFan(Key &key)
+{
+    if (key.mode != key.MANUAL)
+    {
+        if (flowSwitch[flowPin])
+        {
+            fanSwitch = true;
+        }
+        else
+        {
+            fanSwitch = false;
+        }
     }
 }
 

@@ -176,4 +176,3 @@ boolean Timer::wait(unsigned long &prewMillis, unsigned long setMillis)
     }
     return false;
 }
-

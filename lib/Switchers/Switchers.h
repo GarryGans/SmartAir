@@ -16,18 +16,22 @@ class Switchers
     friend class Screen;
 
 private:
-    boolean relayFog;
     byte speedPins[speedPinsAmount];
-    boolean relaySW[speedPinsAmount];
-    boolean fogPin;
-    boolean fogBut;
+    boolean flowRelay[speedPinsAmount];
+
+    byte fanPin;
+
+    byte fogPin;
+    byte fogBut;
+    boolean relayFog;
 
 public:
     Switchers(/* args */);
     ~Switchers();
 
-    void begin(byte speedPins[], byte fogPin, byte fogBut);
+    void begin(byte speedPins[], byte fanPin, byte fogPin, byte fogBut);
     void flowSwitcher(Key &key, Watch &watch);
+    void fanSwitcher(Key &key, Watch &watch);
     void fogSwitcher(Key &key, Watch &watch);
 };
 

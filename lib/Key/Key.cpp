@@ -159,41 +159,41 @@ void Key::manualSwitcher()
         break;
     }
 
-    if (fanState == swON && !manualSwitch[0])
+    if (fanState == swON && !manualFlow[0])
     {
-        manualSwitch[0] = true;
-        manualSwitch[1] = false;
+        manualFlow[0] = true;
+        manualFlow[1] = false;
         fanMode = LOW_SPEED;
     }
-    else if (fanState == swON && manualSwitch[0])
+    else if (fanState == swON && manualFlow[0])
     {
-        manualSwitch[0] = false;
-        manualSwitch[1] = true;
+        manualFlow[0] = false;
+        manualFlow[1] = true;
         fanMode = HIGH_SPEED;
     }
     
-    if (swON && !manualSwitch[0] && fanMode == LOW_SPEED)
+    if (swON && !manualFlow[0] && fanMode == LOW_SPEED)
     {
-        manualSwitch[0] = true;
-        manualSwitch[1] = false;
+        manualFlow[0] = true;
+        manualFlow[1] = false;
         fanMode = LOW_SPEED;
     }
-    else if (swON && manualSwitch[0] && fanMode == LOW_SPEED)
+    else if (swON && manualFlow[0] && fanMode == LOW_SPEED)
     {
-        manualSwitch[0] = false;
-        manualSwitch[1] = false;
+        manualFlow[0] = false;
+        manualFlow[1] = false;
         fanMode = LOW_SPEED;
     }
-    else if (swON && !manualSwitch[1] && fanMode == HIGH_SPEED)
+    else if (swON && !manualFlow[1] && fanMode == HIGH_SPEED)
     {
-        manualSwitch[0] = false;
-        manualSwitch[1] = true;
+        manualFlow[0] = false;
+        manualFlow[1] = true;
         fanMode = HIGH_SPEED;
     }
-    else if (swON && manualSwitch[1] && fanMode == HIGH_SPEED)
+    else if (swON && manualFlow[1] && fanMode == HIGH_SPEED)
     {
-        manualSwitch[0] = false;
-        manualSwitch[1] = false;
+        manualFlow[0] = false;
+        manualFlow[1] = false;
         fanMode = HIGH_SPEED;
     }
 
@@ -204,8 +204,8 @@ void Key::manualSwitcher()
         break;
 
     case MANUAL:
-        manualSwitch[0] = false;
-        manualSwitch[1] = false;
+        manualFlow[0] = false;
+        manualFlow[1] = false;
         fanMode = LOW_SPEED;
         mode = AUTO;
 
