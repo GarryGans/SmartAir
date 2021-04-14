@@ -4,8 +4,8 @@
 #include <Screen.h>
 #include <Key.h>
 
-#define FAN_L1 7
-#define FAN_L2 8
+#define FLOW_L1 7
+#define FLOW_L2 8
 #define FAN 9
 #define FOG_L 10
 #define FOG_But 11
@@ -14,13 +14,13 @@
 
 #define timeHoldKey 1000
 
-byte speedPins[] = {FAN_L1, FAN_L2};
+byte speedPins[] = {FLOW_L1, FLOW_L2};
 byte fanPin = FAN;
 byte fogPin = FOG_L;
 byte fogBut = FOG_But;
-byte keyPin[] = {2, 3, 4, 5, 6};
+byte keyPins[] = {2, 3, 4, 5, 6};
 
-Key key(keyPin);
+Key key(keyPins);
 Switchers switchers;
 Watch watch;
 Screen screen;
@@ -48,7 +48,7 @@ void setup()
 
 void loop()
 {
-  // key.keyCommands();
+  key.keyCommands();
   watch.autoFlow(key);
   switchers.flowSwitcher(key, watch);
 

@@ -164,7 +164,7 @@ void Screen::showFanState(Switchers &relayState, Key &key)
     setFont(u8g2_font_courB18_tr);
     setCursor(5, 42);
 
-    print("FAN");
+    print("Flow");
 
     setFont(u8g2_font_HelvetiPixelOutline_tr);
     setCursor(60, 39);
