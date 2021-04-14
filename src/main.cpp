@@ -48,7 +48,7 @@ void setup()
 
 void loop()
 {
-  key.keyCommands();
+  // key.keyCommands();
   watch.autoFlow(key);
   switchers.flowSwitcher(key, watch);
 
