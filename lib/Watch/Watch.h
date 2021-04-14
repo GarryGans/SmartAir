@@ -8,8 +8,8 @@
 
 #define speedPinsAmount 2
 #define dayWork 5
-#define nightWork 5
 #define dayPause 10
+#define nightWork 5
 #define nightPause 30
 
 class Watch : public RTC_extention
@@ -36,7 +36,7 @@ private:
     int stop;
 
     int stopFog;
-    int fogTime = 300;
+    int fogTime = 1;
 
     const int midNightBefore = 23 * 60 + 59;
     const int midNightAfter = 0;

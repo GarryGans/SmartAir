@@ -170,11 +170,22 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
             }
         }
 
-        stopFog = stop + fogTime;
-        midNigth(stopFog);
-
         timeFromMinute(play, playHour, playMin);
         timeFromMinute(stop, stopHour, stophMin);
+
+        if (!fogSwitch)
+        {
+            stopFog = stop + fogTime;
+            midNigth(stopFog);
+        }
+
+        Serial.print("stopFog ");
+        int h;
+        int m;
+        timeFromMinute(stopFog, h, m);
+        Serial.print(h);
+        Serial.print(":");
+        Serial.println(m);
     }
 
     if (onlyDay && night)
@@ -289,6 +300,10 @@ void Watch::autoFog(Key &key)
             {
                 fogBut = true;
             }
+            // if (fogBut)
+            // {
+            //     fogBut = false;
+            // }
             else
             {
                 fogBut = false;
