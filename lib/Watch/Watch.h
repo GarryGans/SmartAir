@@ -7,7 +7,7 @@
 #include <Timer.h>
 
 #define speedPinsAmount 2
-#define dayWork 5
+#define dayWork 7
 #define dayPause 10
 #define nightWork 5
 #define nightPause 30

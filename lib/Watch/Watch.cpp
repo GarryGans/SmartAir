@@ -270,7 +270,7 @@ void Watch::autoFan(Key &key)
 {
     if (key.mode != key.MANUAL)
     {
-        if (flowSwitch[flowPin])
+        if (flowSwitch[flowPin] || night)
         {
             fanSwitch = true;
         }
