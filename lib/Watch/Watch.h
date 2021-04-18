@@ -23,6 +23,7 @@ private:
     boolean firstStart;
     boolean night;
     boolean newDay;
+    boolean playToMorning;
 
     byte flowPin = 0;
 
