@@ -122,7 +122,12 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
         newDay = false;
     }
 
-    if (nowTime() >= stop && !newDay)
+    if (playToMorning && !night)
+    {
+        playToMorning = false;
+    }
+
+    if (!newDay && !playToMorning && nowTime() >= stop)
     {
         if (!firstStart)
         {
@@ -177,6 +182,7 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
             else if (night)
             {
                 stop = startDay;
+                playToMorning = true;
             }
         }
         else
@@ -185,7 +191,7 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
             midNigth(stop);
         }
 
-        if (!night)
+        if (!night && pause != 0)
         {
             if (startDay < finishDay)
             {
@@ -207,13 +213,13 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
             midNigth(stopFog);
         }
 
-        Serial.print("stopFog ");
-        int h;
-        int m;
-        timeFromMinute(stopFog, h, m);
-        Serial.print(h);
-        Serial.print(":");
-        Serial.println(m);
+        // Serial.print("stopFog ");
+        // int h;
+        // int m;
+        // timeFromMinute(stopFog, h, m);
+        // Serial.print(h);
+        // Serial.print(":");
+        // Serial.println(m);
     }
 
     if (onlyDay && night)
