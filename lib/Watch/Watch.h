@@ -19,7 +19,7 @@ class Watch : public RTC_extention
 
 private:
     boolean fog;
-    boolean onlyDay = 1;
+    boolean onlyDay;
     boolean firstStart;
     boolean night;
     boolean newDay;

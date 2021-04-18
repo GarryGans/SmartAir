@@ -154,8 +154,23 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
             }
         }
 
-        stop = play + work;
-        midNigth(stop);
+        if (pause == 0)
+        {
+            if (!night)
+            {
+                stop = finishDay;
+            }
+            else if (night)
+            {
+                stop = startDay;
+            }
+        }
+
+        else
+        {
+            stop = play + work;
+            midNigth(stop);
+        }
 
         if (!night)
         {
@@ -270,7 +285,7 @@ void Watch::autoFan(Key &key)
 {
     if (key.mode != key.MANUAL)
     {
-        if (flowSwitch[flowPin] || night)
+        if (flowSwitch[flowPin])
         {
             fanSwitch = true;
         }
