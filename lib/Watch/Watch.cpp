@@ -132,8 +132,22 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
 
         else
         {
-            play = stop + pause;
-            midNigth(play);
+            if (pause == 0)
+            {
+                if (!night)
+                {
+                    stop = finishDay;
+                }
+                else if (night)
+                {
+                    stop = startDay;
+                }
+            }
+            else
+            {
+                play = stop + pause;
+                midNigth(play);
+            }
         }
 
         if (!onlyDay)
@@ -165,7 +179,6 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
                 stop = startDay;
             }
         }
-
         else
         {
             stop = play + work;
