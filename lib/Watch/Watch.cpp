@@ -114,6 +114,96 @@ void Watch::midNigth(int &value)
         value -= 24 * 60;
     }
 }
+void Watch::calculateStop(int startDay, int finishDay, int &play, int &stop, int &work, int pause)
+{
+    if (!onlyDay)
+    {
+        if (startDay < finishDay)
+        {
+            if (play >= finishDay)
+            {
+                work = nightWork;
+            }
+        }
+        else if (startDay > finishDay && play >= midNightAfter)
+        {
+            if (play >= finishDay)
+            {
+                work = nightWork;
+            }
+        }
+    }
+
+    if (pause == 0)
+    {
+        if (!night)
+        {
+            stop = finishDay;
+        }
+        if (night)
+        {
+            stop = startDay;
+            playToMorning = true;
+        }
+    }
+    else if (night && play == startDay)
+    {
+        stop = finishDay;
+    }
+    else
+    {
+        stop = play + work;
+        midNigth(stop);
+    }
+
+    if (!night && pause != 0)
+    {
+        if (startDay < finishDay)
+        {
+            correctStop(finishDay, play, stop);
+        }
+
+        else if (startDay > finishDay && play >= midNightAfter)
+        {
+            correctStop(finishDay, play, stop);
+        }
+    }
+}
+
+void Watch::calculatePlay(int startDay, int finishDay, int &play, int stop, int pause)
+{
+    if (!firstStart)
+    {
+        play = nowTime();
+        firstStart = true;
+    }
+
+    else
+    {
+        if (pause == 0)
+        {
+            if (!night)
+            {
+                play = startDay;
+            }
+            if (night)
+            {
+                play = finishDay;
+            }
+        }
+
+        else if (night && play > startDay)
+        {
+            play = startDay;
+        }
+
+        else
+        {
+            play = stop + pause;
+            midNigth(play);
+        }
+    }
+}
 
 void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause)
 {
@@ -129,80 +219,8 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
 
     if (!newDay && !playToMorning && nowTime() >= stop)
     {
-        if (!firstStart)
-        {
-            play = nowTime();
-            firstStart = true;
-        }
-
-        else
-        {
-            if (pause == 0)
-            {
-                if (!night)
-                {
-                    play = startDay;
-                }
-                if (night)
-                {
-                    play = finishDay;
-                }
-            }
-            else
-            {
-                play = stop + pause;
-                midNigth(play);
-            }
-        }
-
-        if (!onlyDay)
-        {
-            if (startDay < finishDay)
-            {
-                if (play >= finishDay)
-                {
-                    work = nightWork;
-                }
-            }
-            else if (startDay > finishDay && play >= midNightAfter)
-            {
-                if (play >= finishDay)
-                {
-                    work = nightWork;
-                }
-            }
-        }
-
-        if (pause == 0)
-        {
-            if (!night)
-            {
-                stop = finishDay;
-            }
-            if (night)
-            {
-                stop = startDay;
-                playToMorning = true;
-            }
-        }
-        else
-        {
-            stop = play + work;
-            midNigth(stop);
-        }
-
-        if (!night && pause != 0)
-        {
-            if (startDay < finishDay)
-            {
-                correctStop(finishDay, play, stop);
-            }
-
-            else if (startDay > finishDay && play >= midNightAfter)
-            {
-                correctStop(finishDay, play, stop);
-            }
-        }
+        calculatePlay(startDay, finishDay, play, stop, pause);
+        calculateStop(startDay, finishDay, play, stop, work, pause);
 
         timeFromMinute(play, playHour, playMin);
         timeFromMinute(stop, stopHour, stophMin);
