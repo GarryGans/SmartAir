@@ -115,7 +115,7 @@ void Watch::midNigth(int &value)
     }
 }
 
-void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
+void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause)
 {
     if (newDay && !night)
     {
@@ -143,7 +143,7 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
                 {
                     play = startDay;
                 }
-                else if (night)
+                if (night)
                 {
                     play = finishDay;
                 }
@@ -179,7 +179,7 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
             {
                 stop = finishDay;
             }
-            else if (night)
+            if (night)
             {
                 stop = startDay;
                 playToMorning = true;
@@ -267,16 +267,15 @@ void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
         }
     }
 
-    if (!night)
-    {
-        work = dayWork;
-        pause = dayPause;
-    }
-
-    else
+    if (night)
     {
         work = nightWork;
         pause = nightPause;
+    }
+    else
+    {
+        work = dayWork;
+        pause = dayPause;
     }
 }
 

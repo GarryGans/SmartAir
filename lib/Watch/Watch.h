@@ -72,7 +72,7 @@ public:
     void switchFlow(int play, int stop, boolean flowSwitch[]);
     void correctStop(int finish, int &play, int &stop);
     void midNigth(int &value);
-    void stopStart(int start, int finish, int &play, int &stop, int &work, int &pause);
+    void stopStart(int start, int finish, int &play, int &stop, int &work, int pause);
     void setDuration(int start, int finish, int &work, int &pause);
     void calculateFlowSwitch(int begin, int finish, int &start, int &stop, int &work, int &pause);
     void autoFlow(Key &key);
