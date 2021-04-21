@@ -191,16 +191,15 @@ void Watch::calculatePlay(int startDay, int finishDay, int &play, int stop, int 
                 play = finishDay;
             }
         }
-
-        else if (night && play > startDay)
-        {
-            play = startDay;
-        }
-
         else
         {
             play = stop + pause;
             midNigth(play);
+        }
+
+        if (night && play > startDay && play < finishDay)
+        {
+            play = startDay;
         }
     }
 }
