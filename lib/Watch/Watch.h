@@ -70,9 +70,9 @@ public:
     int nowTime();
 
     void switchFlow(int play, int stop, boolean flowSwitch[]);
-    void correctStop(int finishDay, int &play, int &stop);
+    void correctStop(int finishDay, int play, int &stop);
     void midNigth(int &value);
-    void calculateStop(int startDay, int finishDay, int &play, int &stop, int &work, int pause);
+    void calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int pause);
     void calculatePlay(int startDay, int finishDay, int &play, int stop, int pause);
     void stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause);
     void setDuration(int startDay, int finishDay, int &work, int &pause);

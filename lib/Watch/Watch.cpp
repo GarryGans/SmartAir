@@ -91,7 +91,7 @@ void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
     }
 }
 
-void Watch::correctStop(int finishDay, int &play, int &stop)
+void Watch::correctStop(int finishDay, int play, int &stop)
 {
     if (play < finishDay)
     {
@@ -114,7 +114,7 @@ void Watch::midNigth(int &value)
         value -= 24 * 60;
     }
 }
-void Watch::calculateStop(int startDay, int finishDay, int &play, int &stop, int &work, int pause)
+void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int pause)
 {
     if (!onlyDay)
     {
