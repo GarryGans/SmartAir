@@ -157,7 +157,7 @@ void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int 
                 stop = constrain(stop, startDay, finishDay);
             }
 
-            else if (startDay > finishDay && stop < startDay)
+            else if (startDay > finishDay && stop <= startDay)
             {
                 stop = constrain(stop, midNightAfter, finishDay);
             }
@@ -165,7 +165,7 @@ void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int 
 
         else if (night)
         {
-            if (startDay < finishDay && nowTime() < startDay)
+            if (startDay < finishDay && stop <= startDay)
             {
                 stop = constrain(stop, midNightAfter, startDay);
             }
@@ -196,7 +196,7 @@ void Watch::calculatePlay(int startDay, int &play, int stop, int pause)
         play = stop + pause;
         midNigth(play);
 
-        if (night && nowTime() < startDay && play > startDay)
+        if (night && stop <= startDay && play > startDay)
         {
             play = startDay;
         }
