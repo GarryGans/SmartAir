@@ -89,21 +89,10 @@ void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
             fog = false;
         }
     }
-}
 
-void Watch::correctStop(int finishDay, int play, int &stop)
-{
-    if (play < finishDay)
+    if (nowTime() == stop && newDuration)
     {
-        if (stop > finishDay && play < stop)
-        {
-            stop = finishDay;
-        }
-
-        else if (play > stop && stop < finishDay)
-        {
-            stop = finishDay;
-        }
+        newDuration = false;
     }
 }
 
@@ -134,21 +123,21 @@ void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int 
         }
     }
 
+    if (night && play >= startDay && nowTime() < startDay)
+    {
+        work = dayWork;
+    }
+
     if (pause == 0)
     {
-        if (!night)
+        if ((onlyDay && night) || !night)
         {
             stop = finishDay;
         }
-        if (night)
+        else if (night)
         {
             stop = startDay;
-            playToMorning = true;
         }
-    }
-    else if (night && play == startDay)
-    {
-        stop = finishDay;
     }
     else
     {
@@ -156,23 +145,33 @@ void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int 
         midNigth(stop);
     }
 
-    if (!night && pause != 0)
+    if (!night)
     {
         if (startDay < finishDay)
         {
-            correctStop(finishDay, play, stop);
+            stop = constrain(stop, startDay, finishDay);
         }
 
-        else if (startDay > finishDay && play >= midNightAfter)
+        else if (startDay > finishDay && stop < startDay)
         {
-            correctStop(finishDay, play, stop);
+            stop = constrain(stop, midNightAfter, finishDay);
         }
     }
+
+    if (night && stop > startDay && nowTime() < startDay)
+    {
+        stop = startDay;
+    }  
 }
 
-void Watch::calculatePlay(int startDay, int finishDay, int &play, int stop, int pause)
+void Watch::calculatePlay(int startDay, int &play, int stop, int pause)
 {
-    if (!firstStart)
+    if (night && onlyDay)
+    {
+        play = startDay;
+    }
+
+    else if (!firstStart)
     {
         play = nowTime();
         firstStart = true;
@@ -180,55 +179,32 @@ void Watch::calculatePlay(int startDay, int finishDay, int &play, int stop, int 
 
     else
     {
-        if (pause == 0)
-        {
-            if (!night)
-            {
-                play = startDay;
-            }
-            if (night)
-            {
-                play = finishDay;
-            }
-        }
-        else
-        {
-            play = stop + pause;
-            midNigth(play);
-        }
+        play = stop + pause;
+        midNigth(play);
+    }
 
-        if (night && play > startDay && play < finishDay)
-        {
-            play = startDay;
-        }
+    if ((night && play > startDay && nowTime() < startDay) || (stop == startDay))
+    {
+        play = startDay;
     }
 }
 
 void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause)
 {
-    if (newDay && !night)
+    if (!newDuration || !firstStart)
     {
-        newDay = false;
-    }
-
-    if (playToMorning && !night)
-    {
-        playToMorning = false;
-    }
-
-    if (!newDay && !playToMorning && nowTime() >= stop)
-    {
-        calculatePlay(startDay, finishDay, play, stop, pause);
+        calculatePlay(startDay, play, stop, pause);
         calculateStop(startDay, finishDay, play, stop, work, pause);
+        newDuration = true;
 
         timeFromMinute(play, playHour, playMin);
         timeFromMinute(stop, stopHour, stophMin);
 
-        if (!fogSwitch)
-        {
-            stopFog = stop + fogTime;
-            midNigth(stopFog);
-        }
+        // if (!fogSwitch)
+        // {
+        //     stopFog = stop + fogTime;
+        //     midNigth(stopFog);
+        // }
 
         // Serial.print("stopFog ");
         // int h;
@@ -238,20 +214,9 @@ void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &wo
         // Serial.print(":");
         // Serial.println(m);
     }
-
-    if (onlyDay && night)
-    {
-        newDay = true;
-
-        play = startDay;
-        stop = play + work;
-
-        timeFromMinute(play, playHour, playMin);
-        timeFromMinute(stop, stopHour, stophMin);
-    }
 }
 
-void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
+void Watch::setDayNight(int startDay, int finishDay, int &work, int &pause)
 {
     if (startDay == finishDay)
     {
@@ -284,7 +249,7 @@ void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
         }
     }
 
-    if (night)
+    if (night && !onlyDay)
     {
         work = nightWork;
         pause = nightPause;
@@ -298,7 +263,7 @@ void Watch::setDuration(int startDay, int finishDay, int &work, int &pause)
 
 void Watch::calculateFlowSwitch(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
 {
-    setDuration(startDay, finishDay, work, pause);
+    setDayNight(startDay, finishDay, work, pause);
 
     stopStart(startDay, finishDay, play, stop, work, pause);
 }

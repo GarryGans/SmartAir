@@ -19,11 +19,10 @@ class Watch : public RTC_extention
 
 private:
     boolean fog;
-    boolean onlyDay;
+    boolean onlyDay = 0;
     boolean firstStart;
     boolean night;
-    boolean newDay;
-    boolean playToMorning;
+    boolean newDuration;
 
     byte flowPin = 0;
 
@@ -70,12 +69,11 @@ public:
     int nowTime();
 
     void switchFlow(int play, int stop, boolean flowSwitch[]);
-    void correctStop(int finishDay, int play, int &stop);
     void midNigth(int &value);
     void calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int pause);
-    void calculatePlay(int startDay, int finishDay, int &play, int stop, int pause);
+    void calculatePlay(int startDay, int &play, int stop, int pause);
     void stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause);
-    void setDuration(int startDay, int finishDay, int &work, int &pause);
+    void setDayNight(int startDay, int finishDay, int &work, int &pause);
     void calculateFlowSwitch(int startDay, int finishDay, int &start, int &stop, int &work, int &pause);
     void autoFlow(Key &key);
     void autoFog(Key &key);
