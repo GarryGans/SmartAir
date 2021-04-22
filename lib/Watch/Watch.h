@@ -70,6 +70,7 @@ public:
 
     void switchFlow(int play, int stop, boolean flowSwitch[]);
     void midNigth(int &value);
+    void correctWork(int startDay, int finishDay, int play, int &work);
     void calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int pause);
     void calculatePlay(int startDay, int &play, int stop, int pause);
     void stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause);
