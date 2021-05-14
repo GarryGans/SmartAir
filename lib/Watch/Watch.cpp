@@ -51,19 +51,71 @@ int Watch::nowTime()
     return (timeToMinute(now.hour(), now.minute()));
 }
 
+byte Watch::setFlowPin()
+{
+    if (nowTime() >= morning && nowTime() < evening)
+    {
+        flowPin = 1;
+
+        // if (nowTime() >= morning && nowTime() < morning + hour)
+        // {
+        //     flowPin = 1;
+        // }
+        // else if (nowTime() >= morning + 2 * hour && nowTime() < morning + 3 * hour)
+        // {
+        //     flowPin = 1;
+        // }
+        // else if (nowTime() >= morning + 4 * hour && nowTime() < morning + 5 * hour)
+        // {
+        //     flowPin = 1;
+        // }
+        // else if (nowTime() >= morning + 6 * hour && nowTime() < morning + 7 * hour)
+        // {
+        //     flowPin = 1;
+        // }
+        // else if (nowTime() >= morning + 8 * hour && nowTime() < morning + 9 * hour)
+        // {
+        //     flowPin = 1;
+        // }
+        // else if (nowTime() >= morning + 10 * hour && nowTime() < morning + 11 * hour)
+        // {
+        //     flowPin = 1;
+        // }
+    }
+
+    else
+    {
+        flowPin = 0;
+    }
+
+    if (flowPin == 0)
+    {
+        flowSwitch[1] = false;
+    }
+    else if (flowPin == 1)
+    {
+        flowSwitch[0] = false;
+    }
+
+    return flowPin;
+}
+
 void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
 {
     if (play < stop)
     {
         if (nowTime() >= play && nowTime() < stop)
         {
-            flowSwitch[flowPin] = true;
+            flowSwitch[setFlowPin()] = true;
             fog = false;
         }
         else
         {
-            flowSwitch[flowPin] = false;
-            fog = true;
+            for (byte i = 0; i < speedPinsAmount; i++)
+            {
+                flowSwitch[i] = false;
+                fog = true;
+            }
         }
     }
 
@@ -71,13 +123,16 @@ void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
     {
         if ((nowTime() >= play && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < stop))
         {
-            flowSwitch[flowPin] = true;
+            flowSwitch[setFlowPin()] = true;
             fog = false;
         }
         else
         {
-            flowSwitch[flowPin] = false;
-            fog = true;
+            for (byte i = 0; i < speedPinsAmount; i++)
+            {
+                flowSwitch[i] = false;
+                fog = true;
+            }
         }
     }
 
