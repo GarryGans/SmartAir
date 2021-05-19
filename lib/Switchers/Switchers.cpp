@@ -71,13 +71,4 @@ void Switchers::fogSwitcher(Key &key, Watch &watch)
         digitalWrite(fogPin, OFF);
         fogRelay = false;
     }
-
-    if (watch.fogBut)
-    {
-        digitalWrite(fogBut, ON);
-    }
-    else
-    {
-        digitalWrite(fogBut, OFF);
-    }
 }

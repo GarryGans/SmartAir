@@ -106,21 +106,19 @@ byte Watch::setFlowPin()
     return flowPin;
 }
 
-void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
+void Watch::switchFlow()
 {
     if (play < stop)
     {
         if (nowTime() >= play && nowTime() < stop)
         {
             flowSwitch[setFlowPin()] = true;
-            fog = false;
         }
         else
         {
             for (byte i = 0; i < speedPinsAmount; i++)
             {
                 flowSwitch[i] = false;
-                fog = true;
             }
         }
     }
@@ -130,14 +128,12 @@ void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
         if ((nowTime() >= play && nowTime() <= midNightBefore) || (nowTime() >= midNightAfter && nowTime() < stop))
         {
             flowSwitch[setFlowPin()] = true;
-            fog = false;
         }
         else
         {
             for (byte i = 0; i < speedPinsAmount; i++)
             {
                 flowSwitch[i] = false;
-                fog = true;
             }
         }
     }
@@ -147,7 +143,6 @@ void Watch::switchFlow(int play, int stop, boolean flowSwitch[])
         for (byte i = 0; i < speedPinsAmount; i++)
         {
             flowSwitch[i] = false;
-            fog = false;
         }
     }
 
@@ -165,7 +160,7 @@ void Watch::midNigth(int &value)
     }
 }
 
-void Watch::correctWork(int startDay, int finishDay, int play, int &work, int &pause)
+void Watch::correctWork()
 {
     if (!onlyDay)
     {
@@ -192,9 +187,9 @@ void Watch::correctWork(int startDay, int finishDay, int play, int &work, int &p
     }
 }
 
-void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int &pause)
+void Watch::calculateStop()
 {
-    correctWork(startDay, finishDay, play, work, pause);
+    correctWork();
 
     if (pause == 0)
     {
@@ -240,7 +235,7 @@ void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int 
     }
 }
 
-void Watch::calculatePlay(int startDay, int &play, int stop, int pause)
+void Watch::calculatePlay()
 {
     if ((night && onlyDay) || (stop == startDay))
     {
@@ -265,34 +260,20 @@ void Watch::calculatePlay(int startDay, int &play, int stop, int pause)
     }
 }
 
-void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
+void Watch::stopStart()
 {
     if (!newDuration || !firstStart)
     {
-        calculatePlay(startDay, play, stop, pause);
-        calculateStop(startDay, finishDay, play, stop, work, pause);
+        calculatePlay();
+        calculateStop();
         newDuration = true;
 
         timeFromMinute(play, playHour, playMin);
         timeFromMinute(stop, stopHour, stophMin);
-
-        // if (!fogSwitch)
-        // {
-        //     stopFog = stop + fogTime;
-        //     midNigth(stopFog);
-        // }
-
-        // Serial.print("stopFog ");
-        // int h;
-        // int m;
-        // timeFromMinute(stopFog, h, m);
-        // Serial.print(h);
-        // Serial.print(":");
-        // Serial.println(m);
     }
 }
 
-void Watch::setDayNight(int startDay, int finishDay, int &work, int &pause)
+void Watch::setDayNight()
 {
     if (startDay == finishDay)
     {
@@ -337,29 +318,29 @@ void Watch::setDayNight(int startDay, int finishDay, int &work, int &pause)
     }
 }
 
-void Watch::calculateFlowSwitch(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
+void Watch::calculateFlowSwitch()
 {
-    setDayNight(startDay, finishDay, work, pause);
+    setDayNight();
 
-    stopStart(startDay, finishDay, play, stop, work, pause);
+    stopStart();
 }
 
 void Watch::autoFlow(Key &key)
 {
-    if (key.mode != key.MANUAL)
+    if (key.mode != key.HAND)
     {
         startDay = timeToMinute(startHour, startMin);
         finishDay = timeToMinute(finishHour, finishMin);
 
-        calculateFlowSwitch(startDay, finishDay, play, stop, work, pause);
+        calculateFlowSwitch();
 
-        switchFlow(play, stop, flowSwitch);
+        switchFlow();
     }
 }
 
 void Watch::autoFan(Key &key)
 {
-    if (key.mode != key.MANUAL)
+    if (key.mode != key.HAND)
     {
         if (flowSwitch[flowPin])
         {
@@ -374,31 +355,15 @@ void Watch::autoFan(Key &key)
 
 void Watch::autoFog(Key &key)
 {
-    if (key.mode != key.MANUAL)
+    if (key.mode != key.HAND)
     {
         if (fog)
         {
-            if (nowTime() < stopFog)
-            {
-                fogSwitch = true;
-            }
-            else
-            {
-                fogSwitch = false;
-            }
-
-            if (fogSwitch)
-            {
-                fogBut = true;
-            }
-            // if (fogBut)
-            // {
-            //     fogBut = false;
-            // }
-            else
-            {
-                fogBut = false;
-            }
+            fogSwitch = true;
+        }
+        else
+        {
+            fogSwitch = false;
         }
     }
 }

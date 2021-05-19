@@ -138,7 +138,7 @@ void Screen::showAlert()
 
 void Screen::bottomLine(Watch &watch, Key &key)
 {
-    if (key.mode == key.MANUAL)
+    if (key.mode == key.HAND)
     {
         setCursor(22, 59);
         setFont(u8g2_font_pixelmordred_tf);
@@ -209,7 +209,7 @@ void Screen::highLighter(Key &key)
 {
     switch (key.mode)
     {
-    case key.LIGHT:
+    case key.SET:
 
         setFontMode(1);  /* activate transparent font mode */
         setDrawColor(1); /* color 1 for the box */

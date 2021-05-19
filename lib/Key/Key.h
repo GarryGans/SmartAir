@@ -35,8 +35,8 @@ private:
     enum Mode
     {
         AUTO,
-        LIGHT,
-        MANUAL
+        SET,
+        HAND
     } mode;
 
     enum FanModes

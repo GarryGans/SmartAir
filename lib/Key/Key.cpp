@@ -25,7 +25,7 @@ void Key::select()
         case SELECT:
             switch (mode)
             {
-            case MANUAL:
+            case HAND:
 
                 switch (fanState)
                 {
@@ -43,7 +43,7 @@ void Key::select()
 
                 break;
 
-            case LIGHT:
+            case SET:
                 switch (highLight)
                 {
                 case TIME:
@@ -104,10 +104,10 @@ void Key::select()
             switch (mode)
             {
             case AUTO:
-                mode = LIGHT;
+                mode = SET;
                 break;
 
-            case LIGHT:
+            case SET:
                 mode = AUTO;
                 highLight = TIME;
                 break;
@@ -137,7 +137,7 @@ void Key::manualSwitcher()
 {
     switch (mode)
     {
-    case MANUAL:
+    case HAND:
 
         switch (fanMode)
         {
@@ -200,10 +200,10 @@ void Key::manualSwitcher()
     switch (mode)
     {
     case AUTO:
-        mode = MANUAL;
+        mode = HAND;
         break;
 
-    case MANUAL:
+    case HAND:
         manualFlow[0] = false;
         manualFlow[1] = false;
         fanMode = LOW_SPEED;
