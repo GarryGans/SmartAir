@@ -9,8 +9,8 @@
 #define speedPinsAmount 2
 #define dayWork 10
 #define dayPause 0
-#define nightWork 3
-#define nightPause 30
+#define nightWork 2
+#define nightPause 60
 
 class Watch : public RTC_extention
 {
@@ -25,8 +25,8 @@ private:
     boolean newDuration;
 
     byte flowPin;
-    int morning = 60 * 8;
-    int evening = 60 * 22;
+    int morning = 60 * 9;
+    int evening = 60 * 20;
     int hour = 60;
 
     int startDay;
@@ -71,15 +71,20 @@ public:
     int nowSec();
     int nowTime();
 
+    byte speedPin();
     byte setFlowPin();
     void switchFlow(int play, int stop, boolean flowSwitch[]);
+
     void midNigth(int &value);
-    void correctWork(int startDay, int finishDay, int play, int &work);
-    void calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int pause);
+    void correctWork(int startDay, int finishDay, int play, int &work, int &pause);
+
+    void calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int &pause);
     void calculatePlay(int startDay, int &play, int stop, int pause);
     void stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause);
+    
     void setDayNight(int startDay, int finishDay, int &work, int &pause);
     void calculateFlowSwitch(int startDay, int finishDay, int &start, int &stop, int &work, int &pause);
+
     void autoFlow(Key &key);
     void autoFog(Key &key);
     void autoFan(Key &key);

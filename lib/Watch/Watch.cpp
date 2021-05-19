@@ -51,36 +51,34 @@ int Watch::nowTime()
     return (timeToMinute(now.hour(), now.minute()));
 }
 
-byte Watch::setFlowPin()
+byte Watch::speedPin()
 {
     if (nowTime() >= morning && nowTime() < evening)
     {
-        flowPin = 1;
-
-        // if (nowTime() >= morning && nowTime() < morning + hour)
-        // {
-        //     flowPin = 1;
-        // }
-        // else if (nowTime() >= morning + 2 * hour && nowTime() < morning + 3 * hour)
-        // {
-        //     flowPin = 1;
-        // }
-        // else if (nowTime() >= morning + 4 * hour && nowTime() < morning + 5 * hour)
-        // {
-        //     flowPin = 1;
-        // }
-        // else if (nowTime() >= morning + 6 * hour && nowTime() < morning + 7 * hour)
-        // {
-        //     flowPin = 1;
-        // }
-        // else if (nowTime() >= morning + 8 * hour && nowTime() < morning + 9 * hour)
-        // {
-        //     flowPin = 1;
-        // }
-        // else if (nowTime() >= morning + 10 * hour && nowTime() < morning + 11 * hour)
-        // {
-        //     flowPin = 1;
-        // }
+        if (nowTime() >= morning && nowTime() < morning + hour)
+        {
+            flowPin = 1;
+        }
+        else if (nowTime() >= morning + 2 * hour && nowTime() < morning + 3 * hour)
+        {
+            flowPin = 1;
+        }
+        else if (nowTime() >= morning + 4 * hour && nowTime() < morning + 5 * hour)
+        {
+            flowPin = 1;
+        }
+        else if (nowTime() >= morning + 6 * hour && nowTime() < morning + 7 * hour)
+        {
+            flowPin = 1;
+        }
+        else if (nowTime() >= morning + 8 * hour && nowTime() < morning + 9 * hour)
+        {
+            flowPin = 1;
+        }
+        else if (nowTime() >= morning + 10 * hour && nowTime() < morning + 11 * hour)
+        {
+            flowPin = 1;
+        }
     }
 
     else
@@ -88,10 +86,18 @@ byte Watch::setFlowPin()
         flowPin = 0;
     }
 
+    return flowPin;
+}
+
+byte Watch::setFlowPin()
+{
+    flowPin = speedPin();
+
     if (flowPin == 0)
     {
         flowSwitch[1] = false;
     }
+
     else if (flowPin == 1)
     {
         flowSwitch[0] = false;
@@ -159,7 +165,7 @@ void Watch::midNigth(int &value)
     }
 }
 
-void Watch::correctWork(int startDay, int finishDay, int play, int &work)
+void Watch::correctWork(int startDay, int finishDay, int play, int &work, int &pause)
 {
     if (!onlyDay)
     {
@@ -179,15 +185,16 @@ void Watch::correctWork(int startDay, int finishDay, int play, int &work)
         }
     }
 
-    if (night && play >= startDay && nowTime() < startDay)
+    if (night && play >= startDay)
     {
         work = dayWork;
+        pause = dayPause;
     }
 }
 
-void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int pause)
+void Watch::calculateStop(int startDay, int finishDay, int play, int &stop, int &work, int &pause)
 {
-    correctWork(startDay, finishDay, play, work);
+    correctWork(startDay, finishDay, play, work, pause);
 
     if (pause == 0)
     {
@@ -251,14 +258,14 @@ void Watch::calculatePlay(int startDay, int &play, int stop, int pause)
         play = stop + pause;
         midNigth(play);
 
-        if (night && stop <= startDay && play > startDay)
+        if (night && play >= startDay)
         {
             play = startDay;
         }
     }
 }
 
-void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int pause)
+void Watch::stopStart(int startDay, int finishDay, int &play, int &stop, int &work, int &pause)
 {
     if (!newDuration || !firstStart)
     {
