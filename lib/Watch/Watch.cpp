@@ -193,7 +193,7 @@ void Watch::calculateStop()
 
     if (pause == 0)
     {
-        if ((onlyDay && night) || !night)
+        if ((onlyDay && night) || !night || (play >= startDay && night))
         {
             stop = finishDay;
         }
@@ -266,6 +266,7 @@ void Watch::stopStart()
     {
         calculatePlay();
         calculateStop();
+
         newDuration = true;
 
         timeFromMinute(play, playHour, playMin);
