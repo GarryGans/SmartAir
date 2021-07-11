@@ -53,38 +53,40 @@ int Watch::nowTime()
 
 byte Watch::speedPin()
 {
-    if (nowTime() >= morning && nowTime() < evening)
-    {
-        if (nowTime() >= morning && nowTime() < morning + hour)
-        {
-            flowPin = 1;
-        }
-        else if (nowTime() >= morning + 2 * hour && nowTime() < morning + 3 * hour)
-        {
-            flowPin = 1;
-        }
-        else if (nowTime() >= morning + 4 * hour && nowTime() < morning + 5 * hour)
-        {
-            flowPin = 1;
-        }
-        else if (nowTime() >= morning + 6 * hour && nowTime() < morning + 7 * hour)
-        {
-            flowPin = 1;
-        }
-        else if (nowTime() >= morning + 8 * hour && nowTime() < morning + 9 * hour)
-        {
-            flowPin = 1;
-        }
-        else if (nowTime() >= morning + 10 * hour && nowTime() < morning + 11 * hour)
-        {
-            flowPin = 1;
-        }
-    }
+    // if (nowTime() >= morning && nowTime() < evening)
+    // {
+    //     if (nowTime() >= morning && nowTime() < morning + hour)
+    //     {
+    //         flowPin = 1;
+    //     }
+    //     else if (nowTime() >= morning + 2 * hour && nowTime() < morning + 3 * hour)
+    //     {
+    //         flowPin = 1;
+    //     }
+    //     else if (nowTime() >= morning + 4 * hour && nowTime() < morning + 5 * hour)
+    //     {
+    //         flowPin = 1;
+    //     }
+    //     else if (nowTime() >= morning + 6 * hour && nowTime() < morning + 7 * hour)
+    //     {
+    //         flowPin = 1;
+    //     }
+    //     else if (nowTime() >= morning + 8 * hour && nowTime() < morning + 9 * hour)
+    //     {
+    //         flowPin = 1;
+    //     }
+    //     else if (nowTime() >= morning + 10 * hour && nowTime() < morning + 11 * hour)
+    //     {
+    //         flowPin = 1;
+    //     }
+    // }
 
-    else
-    {
+    // else
+    // {
+    //     flowPin = 0;
+    // }
+
         flowPin = 0;
-    }
 
     return flowPin;
 }

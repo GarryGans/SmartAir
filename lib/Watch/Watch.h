@@ -9,7 +9,7 @@
 
 #define speedPinsAmount 2
 #define dayWork 10
-#define dayPause 0
+#define dayPause 20
 #define nightWork 2
 #define nightPause 60
 
