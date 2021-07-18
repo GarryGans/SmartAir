@@ -142,11 +142,11 @@ void Watch::correctWork()
         }
     }
 
-    if (night && play >= startDay)
-    {
-        work = dayWork;
-        pause = dayPause;
-    }
+    // if (night && play >= startDay)
+    // {
+    //     work = dayWork;
+    //     pause = dayPause;
+    // }
 }
 
 void Watch::calculateStop()

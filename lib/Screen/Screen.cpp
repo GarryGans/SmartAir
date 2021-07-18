@@ -156,6 +156,17 @@ void Screen::bottomLine(Watch &watch, Key &key)
         setFont(u8g2_font_bitcasual_tn);
 
         showFanTime(watch, key);
+
+        setFont(u8g2_font_pressstart2p_8f);
+
+        if (watch.night)
+        {
+            print(" N");
+        }
+        else
+        {
+            print(" D");
+        }
     }
 }
 
