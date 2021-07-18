@@ -159,7 +159,7 @@ void Screen::bottomLine(Watch &watch, Key &key)
     }
 }
 
-void Screen::showFanState(Switchers &relayState, Key &key)
+void Screen::showFlowState(Switchers &relayState, Key &key)
 {
     setFont(u8g2_font_courB18_tr);
     setCursor(5, 42);
@@ -177,12 +177,12 @@ void Screen::showFanState(Switchers &relayState, Key &key)
 
         if (relayState.flowRelay[0])
         {
-            setCursor(102, 35);
+            setCursor(100, 35);
             print(fanState[2]);
         }
         else if (relayState.flowRelay[1])
         {
-            setCursor(97, 44);
+            setCursor(95, 44);
             print(fanState[3]);
         }
     }
@@ -285,7 +285,7 @@ void Screen::fanScreen(Switchers &relayState, Key &key, Watch &watch)
     {
         // highLighter(key);
         showHeaderScreen(watch);
-        showFanState(relayState, key);
+        showFlowState(relayState, key);
         bottomLine(watch, key);
     } while (nextPage());
 }

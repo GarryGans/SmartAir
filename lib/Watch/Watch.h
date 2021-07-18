@@ -9,9 +9,9 @@
 
 #define speedPinsAmount 2
 #define dayWork 10
-#define dayPause 20
+#define dayPause 10
 #define nightWork 2
-#define nightPause 60
+#define nightPause 30
 
 class Watch : public RTC_extention
 {
@@ -26,8 +26,8 @@ private:
     boolean newDuration;
 
     byte flowPin;
-    int morning = 60 * 9;
-    int evening = 60 * 20;
+    int morning = 60 * 6;
+    int evening = 60 * 21;
     int hour = 60;
 
     int startDay;
@@ -47,10 +47,10 @@ private:
     boolean fanSwitch;
     boolean fogSwitch;
 
-    int startHour = 5;
+    int startHour = 6;
     int startMin = 00;
-    int finishHour = 23;
-    int finishMin = 10;
+    int finishHour = 18;
+    int finishMin = 30;
 
     int playHour;
     int playMin;
@@ -70,7 +70,6 @@ public:
     int nowTime();
 
     byte speedPin();
-    byte setFlowPin();
     void switchFlow();
 
     void midNigth(int &value);

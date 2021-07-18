@@ -46,7 +46,7 @@ public:
 
     void showAlert();
     void bottomLine(Watch &watch, Key &key);
-    void showFanState(Switchers &relayState, Key &key);
+    void showFlowState(Switchers &relayState, Key &key);
     void headerTime(Watch &watch);
     void headerDate(Watch &watch);
     void showHeaderScreen(Watch &watch);
