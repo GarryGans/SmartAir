@@ -10,20 +10,12 @@ Watch::~Watch()
 
 void Watch::timeFromMinute(int time, int &hour, int &minute)
 {
-    // hour = 0;
-    // minute = 0;
+    hour = 0;
 
-    if (time < 60)
+    while (time >= 60)
     {
-        hour = 0;
-    }
-    else
-    {
-        while (time >= 60)
-        {
-            time -= 60;
-            hour++;
-        }
+        time -= 60;
+        hour++;
     }
 
     minute = time;
@@ -177,18 +169,21 @@ void Watch::correctWork()
 {
     if (!onlyDay)
     {
-        if (!night)
+        if (night)
+        {
+            if (play >= startDay && nowTime() < startDay)
+            {
+                work = dayWork;
+                pause = dayPause;
+            }
+        }
+
+        else
         {
             if (play >= finishDay && nowTime() < finishDay)
             {
                 work = nightWork;
             }
-        }
-
-        if (night && play >= startDay)
-        {
-            work = dayWork;
-            pause = dayPause;
         }
     }
 }
