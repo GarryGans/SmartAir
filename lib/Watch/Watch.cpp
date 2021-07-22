@@ -115,7 +115,7 @@ int Watch::next(int day, int work)
     return midNigth(day + work);
 }
 
-void Watch::correctStop(int &stop)
+int Watch::correctStop(int stop)
 {
     if (onlyDay)
     {
@@ -143,6 +143,8 @@ void Watch::correctStop(int &stop)
             }
         }
     }
+
+    return stop;
 }
 
 void Watch::calculateStop()
@@ -160,8 +162,7 @@ void Watch::calculateStop()
     }
     else
     {
-        stop = next(play, work);
-        correctStop(stop);
+        stop = correctStop(next(play, work));
     }
 }
 

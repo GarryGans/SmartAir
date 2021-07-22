@@ -75,7 +75,7 @@ public:
     int midNigth(int value);
     int next(int day, int work);
     void correctWork();
-    void correctStop(int &stop);
+    int correctStop(int stop);
 
     void calculateStop();
     void calculatePlay();
