@@ -114,48 +114,56 @@ void Watch::switchFlow()
     }
 }
 
-void Watch::midNigth(int &value)
+int Watch::midNigth(int value)
 {
     if (value > midNightBefore)
     {
         value -= 24 * 60;
     }
+
+    return value;
 }
 
-void Watch::correctWork()
+int Watch::setNext(int day, int work)
 {
-    if (!onlyDay)
+    return midNigth(day + work);
+}
+
+void Watch::correctStop(int &stop)
+{
+    if (onlyDay)
     {
-        if (startDay < finishDay)
+        if (stop > finishDay && nowTime() < finishDay)
         {
-            if (play >= finishDay)
-            {
-                work = nightWork;
-            }
-        }
-        else if (startDay > finishDay && play >= midNightAfter)
-        {
-            if (play >= finishDay)
-            {
-                work = nightWork;
-            }
+            stop = finishDay;
         }
     }
 
-    // if (night && play >= startDay)
-    // {
-    //     work = dayWork;
-    //     pause = dayPause;
-    // }
+    else
+    {
+        if (night)
+        {
+            if (stop > startDay && nowTime() < startDay)
+            {
+                stop = setNext(startDay, dayWork);
+            }
+        }
+
+        else
+        {
+            if (stop > finishDay && nowTime() < finishDay)
+            {
+                stop = setNext(finishDay, nightWork);
+            }
+        }
+    }
 }
 
 void Watch::calculateStop()
 {
-    correctWork();
-
     if (pause == 0)
     {
-        if ((onlyDay && night) || !night || (play >= startDay && night))
+        if ((onlyDay && night) || !night)
         {
             stop = finishDay;
         }
@@ -166,33 +174,37 @@ void Watch::calculateStop()
     }
     else
     {
-        stop = play + work;
-        midNigth(stop);
+        stop = setNext(play, work);
+        correctStop(stop);
+    }
+}
 
+void Watch::correctWork()
+{
+    if (!onlyDay)
+    {
         if (!night)
         {
             if (startDay < finishDay)
             {
-                stop = constrain(stop, startDay, finishDay);
+                if (play >= finishDay)
+                {
+                    work = nightWork;
+                }
             }
-
-            else if (startDay > finishDay && stop <= startDay)
+            else if (startDay > finishDay && play >= midNightAfter)
             {
-                stop = constrain(stop, midNightAfter, finishDay);
+                if (play >= finishDay)
+                {
+                    work = nightWork;
+                }
             }
         }
 
-        else if (night)
+        if (night && play == startDay)
         {
-            if (startDay < finishDay && stop <= startDay)
-            {
-                stop = constrain(stop, midNightAfter, startDay);
-            }
-
-            else if (startDay > finishDay)
-            {
-                stop = constrain(stop, finishDay, startDay);
-            }
+            work = dayWork;
+            pause = dayPause;
         }
     }
 }
@@ -212,18 +224,16 @@ void Watch::calculatePlay()
 
     else
     {
-        if (night && play == startDay)
-        {
-            pause = dayPause;
-        }
         play = stop + pause;
         midNigth(play);
     }
+
+    correctWork();
 }
 
 void Watch::stopStart()
 {
-    if (!newDuration || !firstStart)
+    if (!newDuration)
     {
         calculatePlay();
         calculateStop();

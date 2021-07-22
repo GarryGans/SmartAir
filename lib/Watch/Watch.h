@@ -20,7 +20,7 @@ class Watch : public RTC_extention
 
 private:
     boolean fog;
-    boolean onlyDay = 0;
+    boolean onlyDay;
     boolean firstStart;
     boolean night;
     boolean newDuration;
@@ -72,8 +72,10 @@ public:
     byte speedPin();
     void switchFlow();
 
-    void midNigth(int &value);
+    int midNigth(int value);
+    int setNext(int day, int work);
     void correctWork();
+    void correctStop(int &stop);
 
     void calculateStop();
     void calculatePlay();
