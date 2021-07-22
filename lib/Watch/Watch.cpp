@@ -10,8 +10,8 @@ Watch::~Watch()
 
 void Watch::timeFromMinute(int time, int &hour, int &minute)
 {
-    hour = 0;
-    minute = 0;
+    // hour = 0;
+    // minute = 0;
 
     if (time < 60)
     {
@@ -78,10 +78,7 @@ void Watch::switchFlow()
         }
         else
         {
-            for (byte i = 0; i < speedPinsAmount; i++)
-            {
-                flowSwitch[i] = false;
-            }
+            flowSwitch[speedPin()] = false;
         }
     }
 
@@ -93,10 +90,7 @@ void Watch::switchFlow()
         }
         else
         {
-            for (byte i = 0; i < speedPinsAmount; i++)
-            {
-                flowSwitch[i] = false;
-            }
+            flowSwitch[speedPin()] = false;
         }
     }
 
@@ -124,7 +118,7 @@ int Watch::midNigth(int value)
     return value;
 }
 
-int Watch::setNext(int day, int work)
+int Watch::next(int day, int work)
 {
     return midNigth(day + work);
 }
@@ -145,7 +139,7 @@ void Watch::correctStop(int &stop)
         {
             if (stop > startDay && nowTime() < startDay)
             {
-                stop = setNext(startDay, dayWork);
+                stop = next(startDay, dayWork);
             }
         }
 
@@ -153,7 +147,7 @@ void Watch::correctStop(int &stop)
         {
             if (stop > finishDay && nowTime() < finishDay)
             {
-                stop = setNext(finishDay, nightWork);
+                stop = next(finishDay, nightWork);
             }
         }
     }
@@ -167,14 +161,14 @@ void Watch::calculateStop()
         {
             stop = finishDay;
         }
-        else if (night)
+        else if (!onlyDay && night)
         {
             stop = startDay;
         }
     }
     else
     {
-        stop = setNext(play, work);
+        stop = next(play, work);
         correctStop(stop);
     }
 }
@@ -185,23 +179,13 @@ void Watch::correctWork()
     {
         if (!night)
         {
-            if (startDay < finishDay)
+            if (play >= finishDay && nowTime() < finishDay)
             {
-                if (play >= finishDay)
-                {
-                    work = nightWork;
-                }
-            }
-            else if (startDay > finishDay && play >= midNightAfter)
-            {
-                if (play >= finishDay)
-                {
-                    work = nightWork;
-                }
+                work = nightWork;
             }
         }
 
-        if (night && play == startDay)
+        if (night && play >= startDay)
         {
             work = dayWork;
             pause = dayPause;
@@ -224,8 +208,7 @@ void Watch::calculatePlay()
 
     else
     {
-        play = stop + pause;
-        midNigth(play);
+        play = next(stop, pause);
     }
 
     correctWork();
@@ -236,12 +219,12 @@ void Watch::stopStart()
     if (!newDuration)
     {
         calculatePlay();
+        timeFromMinute(play, playHour, playMin);
+
         calculateStop();
+        timeFromMinute(stop, stopHour, stophMin);
 
         newDuration = true;
-
-        timeFromMinute(play, playHour, playMin);
-        timeFromMinute(stop, stopHour, stophMin);
     }
 }
 
