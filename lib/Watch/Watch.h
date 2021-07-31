@@ -27,7 +27,7 @@ private:
 
     byte flowPin;
     int morning = 60 * 6;
-    int evening = 60 * 21;
+    int evening = 60 * 22;
     int hour = 60;
 
     int startDay;
@@ -47,10 +47,10 @@ private:
     boolean fanSwitch;
     boolean fogSwitch;
 
-    int startHour = 6;
+    int startHour = 5;
     int startMin = 00;
-    int finishHour = 18;
-    int finishMin = 30;
+    int finishHour = 23;
+    int finishMin = 10;
 
     int playHour;
     int playMin;
