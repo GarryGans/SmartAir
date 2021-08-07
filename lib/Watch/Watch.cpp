@@ -124,7 +124,7 @@ int Watch::correctStop(int stop)
     {
         if (night)
         {
-            if (stop > startDay && nowTime() < startDay)
+            if (stop >= startDay && nowTime() < startDay)
             {
                 stop = midNigth(startDay + dayWork);
             }
@@ -132,7 +132,7 @@ int Watch::correctStop(int stop)
 
         else
         {
-            if (stop > finishDay && nowTime() < finishDay)
+            if (stop >= finishDay && nowTime() < finishDay)
             {
                 stop = midNigth(finishDay + nightWork);
             }
@@ -187,7 +187,7 @@ void Watch::correctWork()
 
 void Watch::calculatePlay()
 {
-    if ((night && onlyDay) || (stop == startDay))
+    if (night && onlyDay)
     {
         play = startDay;
     }
