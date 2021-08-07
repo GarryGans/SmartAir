@@ -153,28 +153,36 @@ void Watch::calculateStop()
     }
 }
 
-void Watch::correctWork()
+int Watch::correctPlay(int play)
 {
-    if (!onlyDay)
+    if (onlyDay)
+    {
+        if (play >= finishDay && nowTime() < finishDay)
+        {
+            play = startDay;
+        }
+    }
+
+    else
     {
         if (night)
         {
-            if (play >= startDay && nowTime() < startDay)
+            if (play > startDay && nowTime() < startDay)
             {
-                work = dayWork;
-                pause = dayPause;
+                play = startDay;
             }
         }
 
         else
         {
-            if (play >= finishDay && nowTime() < finishDay)
+            if (play > finishDay && nowTime() < finishDay)
             {
-                work = nightWork;
-                pause = nightPause;
+                play = finishDay;
             }
         }
     }
+
+    return play;
 }
 
 void Watch::calculatePlay()
@@ -192,10 +200,8 @@ void Watch::calculatePlay()
 
     else
     {
-        play = midNigth(stop + pause);
+        play = correctPlay(midNigth(stop + pause));
     }
-
-    correctWork();
 }
 
 void Watch::stopStart()

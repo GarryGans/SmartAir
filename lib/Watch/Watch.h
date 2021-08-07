@@ -73,7 +73,7 @@ public:
     void switchFlow();
 
     int midNigth(int value);
-    void correctWork();
+    int correctPlay(int play);
     int correctStop(int stop);
 
     void calculateStop();
