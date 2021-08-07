@@ -86,14 +86,6 @@ void Watch::switchFlow()
         }
     }
 
-    // else
-    // {
-    //     for (byte i = 0; i < speedPinsAmount; i++)
-    //     {
-    //         flowSwitch[i] = false;
-    //     }
-    // }
-
     if (nowTime() == stop && newDuration)
     {
         newDuration = false;
