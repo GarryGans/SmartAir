@@ -47,9 +47,9 @@ private:
     boolean fanSwitch;
     boolean fogSwitch;
 
-    int startHour = 6;
+    int startHour = 5;
     int startMin = 00;
-    int finishHour = 18;
+    int finishHour = 23;
     int finishMin = 30;
 
     int playHour;
