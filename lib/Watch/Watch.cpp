@@ -110,11 +110,6 @@ int Watch::midNigth(int value)
     return value;
 }
 
-int Watch::next(int day, int work)
-{
-    return midNigth(day + work);
-}
-
 int Watch::correctStop(int stop)
 {
     if (onlyDay)
@@ -131,7 +126,7 @@ int Watch::correctStop(int stop)
         {
             if (stop > startDay && nowTime() < startDay)
             {
-                stop = next(startDay, dayWork);
+                stop = midNigth(startDay + dayWork);
             }
         }
 
@@ -139,7 +134,7 @@ int Watch::correctStop(int stop)
         {
             if (stop > finishDay && nowTime() < finishDay)
             {
-                stop = next(finishDay, nightWork);
+                stop = midNigth(finishDay + nightWork);
             }
         }
     }
@@ -162,7 +157,7 @@ void Watch::calculateStop()
     }
     else
     {
-        stop = correctStop(next(play, work));
+        stop = correctStop(midNigth(play + work));
     }
 }
 
@@ -184,6 +179,7 @@ void Watch::correctWork()
             if (play >= finishDay && nowTime() < finishDay)
             {
                 work = nightWork;
+                pause = nightPause;
             }
         }
     }
@@ -204,7 +200,7 @@ void Watch::calculatePlay()
 
     else
     {
-        play = next(stop, pause);
+        play = midNigth(stop + pause);
     }
 
     correctWork();

@@ -73,7 +73,6 @@ public:
     void switchFlow();
 
     int midNigth(int value);
-    int next(int day, int work);
     void correctWork();
     int correctStop(int stop);
 
