@@ -5,7 +5,6 @@
 #include <RTC_extention.h>
 #include <Key.h>
 #include <Timer.h>
-#include <GyverButton.h>
 
 #define speedPinsAmount 2
 #define dayWork 10
@@ -13,7 +12,7 @@
 #define nightWork 2
 #define nightPause 30
 
-class Watch : public RTC_extention
+class Watch : public RTC_ext_3231
 {
     friend class Switchers;
     friend class Screen;

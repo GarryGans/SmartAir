@@ -1,6 +1,6 @@
 #include "Watch.h"
 
-Watch::Watch() : RTC_extention()
+Watch::Watch() : RTC_ext_3231()
 {
 }
 
