@@ -33,6 +33,7 @@ void setup()
   delay(100);
 
   watch.begin();
+  
   // watch.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
   delay(100);
