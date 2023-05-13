@@ -33,14 +33,14 @@ void setup()
   delay(100);
 
   watch.begin();
-  // watch.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
+  // watch.adjust(DateTime(F(__DATE__), F(__TIME__)));
   delay(100);
 
   key.begin(KB1x4, timeHoldKey);
   delay(100);
 
-  switchers.begin(speedPins, fanPin, fogPin, fogBut);
+switchers.begin(speedPins, fanPin, fogPin, fogBut);
   delay(100);
 }
 
